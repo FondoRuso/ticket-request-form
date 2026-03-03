@@ -1,9 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <div
-      class="column items-center q-gutter-md"
-      style="max-width: 600px; margin: 0 auto"
-    >
+    <div class="column items-center q-gutter-md page-content">
       <!-- SUCCESS STATE -->
       <template v-if="formStore.submitted">
         <div class="full-width column items-center q-mt-xl q-pt-xl">
@@ -149,3 +146,9 @@ onMounted(() => {
   matchesStore.fetchMatches();
 });
 </script>
+
+<style scoped lang="sass">
+.page-content
+  max-width: 600px
+  margin: 0 auto
+</style>
