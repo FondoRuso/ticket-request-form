@@ -1,10 +1,10 @@
 <template>
   <div class="text-caption text-grey q-mt-xl q-mb-md full-width text-center">
-    Проблемы? Пишите
+    Сделано с 🤍 для «Fondo Ruso»<br />
+    Есть проблемы? Пишите
     <a href="https://t.me/vovarevenko" target="_blank" rel="noopener"
       >@vovarevenko</a
-    >
-    · v{{ version }}
+    >, версия {{ version }}
   </div>
 </template>
 

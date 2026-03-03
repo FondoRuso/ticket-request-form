@@ -81,6 +81,7 @@
             emit-value
             map-options
             clearable
+            hint="Мы можем выразить желание на одну из доступных категорий, но клуб может решить по-своему"
           />
 
           <PersonalDataBlock
@@ -92,7 +93,7 @@
             label="Отправить заявку"
             type="submit"
             color="primary"
-            class="q-mt-md full-width"
+            class="q-mt-xl full-width"
             size="lg"
             no-caps
           />
