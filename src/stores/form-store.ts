@@ -8,6 +8,8 @@ export interface Match {
   tournament: string;
   stadium: string;
   atHome: boolean;
+  isWomen: boolean;
+  isCantera: boolean;
   date: string;
   isDateConfirmed: boolean;
 }

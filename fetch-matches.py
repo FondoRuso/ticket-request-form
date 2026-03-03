@@ -79,6 +79,8 @@ def parse_match(m):
         "tournament": m["competition"]["name"],
         "stadium": m["venue"]["name"],
         "atHome": at_home,
+        "isWomen": "Femenin" in match_type,
+        "isCantera": "Cantera" in match_type,
         "date": to_madrid_iso(m["dateTime"]),
         "isDateConfirmed": m["isScheduled"],
     }

@@ -33,6 +33,18 @@
               class="q-ml-xs"
             />
             <q-badge v-else color="orange" label="В гостях" class="q-ml-xs" />
+            <q-badge
+              v-if="opt.isWomen"
+              color="grey"
+              label="Женщины"
+              class="q-ml-xs"
+            />
+            <q-badge
+              v-if="opt.isCantera"
+              color="grey"
+              label="Кантера"
+              class="q-ml-xs"
+            />
           </q-item-label>
         </q-item-section>
       </q-item>
