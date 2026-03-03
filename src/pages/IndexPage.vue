@@ -77,7 +77,6 @@
             label="Категория билета"
             outlined
             :options="ticketCategoryOptions"
-            multiple
             emit-value
             map-options
             clearable
@@ -93,8 +92,7 @@
           <q-btn
             label="Отправить заявку"
             type="submit"
-            color="primary"
-            class="q-mt-xl full-width"
+            class="q-mt-xl full-width submit-btn"
             size="lg"
             no-caps
           />
@@ -158,4 +156,8 @@ onMounted(() => {
 .page-content
   max-width: 600px
   margin: 0 auto
+
+.submit-btn
+  background-color: $primary !important
+  color: white
 </style>
