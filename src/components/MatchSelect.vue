@@ -2,6 +2,7 @@
   <q-select
     :model-value="modelValue"
     label="Матч"
+    outlined
     :options="matches"
     :loading="loading"
     :option-label="formatMatchLabel"

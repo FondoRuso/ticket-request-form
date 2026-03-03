@@ -31,6 +31,7 @@
           <q-input
             v-model="formStore.memberName"
             label="Выберите себя из списка"
+            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -39,6 +40,7 @@
           <q-input
             v-model="formStore.phone"
             label="Номер телефона для связи"
+            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -47,6 +49,7 @@
           <q-input
             v-model="formStore.telegram"
             label="Ник в Telegram"
+            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -56,6 +59,7 @@
             v-model="formStore.email"
             label="Email"
             type="email"
+            outlined
             hint="Внимательно проверяй почту, туда будут приходить оповещения по статусу заявки"
             debounce="500"
             lazy-rules
@@ -71,6 +75,7 @@
           <q-select
             v-model="formStore.ticketCategory"
             label="Категория билета"
+            outlined
             :options="ticketCategoryOptions"
             multiple
             emit-value

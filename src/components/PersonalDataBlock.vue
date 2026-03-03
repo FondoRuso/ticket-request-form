@@ -11,6 +11,7 @@
       <q-input
         :model-value="modelValue.firstName"
         label="Имя латиницей"
+        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -20,6 +21,7 @@
       <q-input
         :model-value="modelValue.lastName"
         label="Фамилия латиницей"
+        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -29,6 +31,7 @@
       <q-input
         :model-value="formattedBirthDate"
         label="Дата рождения"
+        outlined
         lazy-rules
         :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
         readonly
@@ -57,6 +60,7 @@
       <q-input
         :model-value="modelValue.documentNumber"
         label="Номер документа"
+        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
