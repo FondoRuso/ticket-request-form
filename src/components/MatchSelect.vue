@@ -66,31 +66,31 @@
 </template>
 
 <script setup lang="ts">
-import type { Match } from 'stores/form-store';
+import type { Match } from 'stores/form-store'
 
 defineProps<{
-  modelValue: Match | null;
-  matches: Match[];
-  loading: boolean;
-}>();
+  modelValue: Match | null
+  matches: Match[]
+  loading: boolean
+}>()
 
 defineEmits<{
-  'update:modelValue': [value: Match | null];
-}>();
+  'update:modelValue': [value: Match | null]
+}>()
 
 function formatMatchLabel(match: Match): string {
-  return `${match.team} vs ${match.vs} — ${formatDate(match.date, match.isDateConfirmed)}`;
+  return `${match.team} vs ${match.vs} — ${formatDate(match.date, match.isDateConfirmed)}`
 }
 
 function formatDate(dateStr: string, isConfirmed: boolean): string {
-  const date = new Date(dateStr);
+  const date = new Date(dateStr)
 
   if (!isConfirmed) {
     return date.toLocaleDateString('ru-RU', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
-    });
+    })
   }
 
   return date.toLocaleDateString('ru-RU', {
@@ -100,6 +100,6 @@ function formatDate(dateStr: string, isConfirmed: boolean): string {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-  });
+  })
 }
 </script>

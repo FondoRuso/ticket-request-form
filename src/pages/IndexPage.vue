@@ -105,51 +105,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import type { QForm } from 'quasar';
-import { useFormStore } from 'stores/form-store';
-import { useMatchesStore } from 'stores/matches-store';
-import AppHeader from 'components/AppHeader.vue';
-import AppFooter from 'components/AppFooter.vue';
-import MatchSelect from 'components/MatchSelect.vue';
-import PersonalDataBlock from 'components/PersonalDataBlock.vue';
+import { ref, computed, onMounted } from 'vue'
+import type { QForm } from 'quasar'
+import { useFormStore } from 'stores/form-store'
+import { useMatchesStore } from 'stores/matches-store'
+import AppHeader from 'components/AppHeader.vue'
+import AppFooter from 'components/AppFooter.vue'
+import MatchSelect from 'components/MatchSelect.vue'
+import PersonalDataBlock from 'components/PersonalDataBlock.vue'
 
-const formStore = useFormStore();
-const matchesStore = useMatchesStore();
-const formRef = ref<QForm | null>(null);
+const formStore = useFormStore()
+const matchesStore = useMatchesStore()
+const formRef = ref<QForm | null>(null)
 
 const ticketCategoryOptions = [
   'Нижний ряд ближе к угловому флагу',
   'Центр самый верх',
   'Третий или четвёртый ярус за воротами',
-];
+]
 
 const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,
-);
+)
 
 const requiredRule = (val: string) =>
-  (!!val && val.trim().length > 0) || 'Обязательное поле';
+  (!!val && val.trim().length > 0) || 'Обязательное поле'
 
 const emailRule = (val: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Введите корректный email';
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Введите корректный email'
 
 async function onSubmit() {
-  const valid = await formRef.value?.validate();
-  if (!valid) return;
+  const valid = await formRef.value?.validate()
+  if (!valid) return
 
-  const data = formStore.getSubmitData();
-  console.log('Form submitted:', data);
-  formStore.submitted = true;
+  const data = formStore.getSubmitData()
+  console.log('Form submitted:', data)
+  formStore.submitted = true
 }
 
 function handleNewRequest() {
-  formStore.resetForm();
+  formStore.resetForm()
 }
 
 onMounted(() => {
-  matchesStore.fetchMatches();
-});
+  matchesStore.fetchMatches()
+})
 </script>
 
 <style scoped lang="sass">

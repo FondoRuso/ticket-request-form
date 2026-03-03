@@ -3,8 +3,8 @@
     <div class="text-subtitle1 q-mb-sm">Персональные данные</div>
     <div class="text-body2 q-mb-xs text-grey-8">
       Данные из документа, который у вас будет с собой, когда вы пойдёте
-      забирать свой билет. Каждый билет забирается индивидуально при предъявлении
-      документа.
+      забирать свой билет. Каждый билет забирается индивидуально при
+      предъявлении документа.
     </div>
     <div class="text-body2 q-mb-md text-grey-8">
       Только для выездных матчей.
@@ -49,7 +49,9 @@
               <q-date
                 :model-value="modelValue.birthDate"
                 mask="YYYY-MM-DD"
-                @update:model-value="update('birthDate', ($event as string) ?? '')"
+                @update:model-value="
+                  update('birthDate', ($event as string) ?? '')
+                "
               >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="OK" color="primary" flat />
@@ -67,38 +69,36 @@
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
-        @update:model-value="
-          update('documentNumber', ($event as string) ?? '')
-        "
+        @update:model-value="update('documentNumber', ($event as string) ?? '')"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { PersonalData } from 'stores/form-store';
+import { computed } from 'vue'
+import type { PersonalData } from 'stores/form-store'
 
 const props = defineProps<{
-  modelValue: PersonalData;
-}>();
+  modelValue: PersonalData
+}>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: PersonalData];
-}>();
+  'update:modelValue': [value: PersonalData]
+}>()
 
 function update(field: keyof PersonalData, value: string) {
-  emit('update:modelValue', { ...props.modelValue, [field]: value });
+  emit('update:modelValue', { ...props.modelValue, [field]: value })
 }
 
 const requiredRule = (val: string) =>
-  (!!val && val.trim().length > 0) || 'Обязательное поле';
+  (!!val && val.trim().length > 0) || 'Обязательное поле'
 
 const formattedBirthDate = computed(() => {
-  if (!props.modelValue.birthDate) return '';
-  const date = new Date(props.modelValue.birthDate + 'T00:00:00');
-  return date.toLocaleDateString('ru-RU');
-});
+  if (!props.modelValue.birthDate) return ''
+  const date = new Date(props.modelValue.birthDate + 'T00:00:00')
+  return date.toLocaleDateString('ru-RU')
+})
 </script>
 
 <style scoped lang="sass">

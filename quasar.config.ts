@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
-import { defineConfig } from '#q-app/wrappers';
+import { readFileSync } from 'node:fs'
+import { defineConfig } from '#q-app/wrappers'
 
-const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'));
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
 export default defineConfig(() => {
   return {
@@ -32,5 +32,5 @@ export default defineConfig(() => {
       },
       plugins: [],
     },
-  };
-});
+  }
+})

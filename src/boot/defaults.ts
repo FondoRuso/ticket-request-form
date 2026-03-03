@@ -1,11 +1,11 @@
-import { boot } from 'quasar/wrappers';
-import { QInput, QSelect } from 'quasar';
+import { boot } from 'quasar/wrappers'
+import { QInput, QSelect } from 'quasar'
 
 export default boot(() => {
   if (QInput.props.outlined) {
-    QInput.props.outlined.default = true;
+    QInput.props.outlined.default = true
   }
   if (QSelect.props.outlined) {
-    QSelect.props.outlined.default = true;
+    QSelect.props.outlined.default = true
   }
-});
+})

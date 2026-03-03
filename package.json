@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build",
-    "lint": "eslint --ext .js,.ts,.vue ./src"
+    "lint": "eslint --ext .js,.ts,.vue ./src",
+    "format": "prettier --write \"src/**/*.{ts,vue,scss,sass,css,json}\" \"*.{json,js,ts}\""
   },
   "dependencies": {
     "@quasar/extras": "^1.16.0",
