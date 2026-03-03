@@ -24,7 +24,7 @@
 
         <q-form
           ref="formRef"
-          class="full-width column q-gutter-sm"
+          class="full-width column q-gutter-y-sm"
           greedy
           @submit.prevent="onSubmit"
         >
