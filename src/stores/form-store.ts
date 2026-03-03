@@ -26,7 +26,7 @@ export const useFormStore = defineStore(
     const phone = ref('');
     const telegram = ref('');
     const email = ref('');
-    const ticketCategory = ref<string[]>([]);
+    const ticketCategory = ref<string | null>(null);
     const personalData = ref<PersonalData>({
       firstName: '',
       lastName: '',
@@ -59,7 +59,7 @@ export const useFormStore = defineStore(
       phone.value = '';
       telegram.value = '';
       email.value = '';
-      ticketCategory.value = [];
+      ticketCategory.value = null;
       personalData.value = {
         firstName: '',
         lastName: '',
