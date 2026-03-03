@@ -85,12 +85,11 @@ export const useFormStore = defineStore(
   },
   {
     persist: {
-      pick: [
+      paths: [
         'memberName',
         'phone',
         'telegram',
         'email',
-        'ticketCategory',
         'personalData',
       ],
     },
