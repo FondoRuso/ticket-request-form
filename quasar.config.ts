@@ -1,4 +1,7 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig } from '#q-app/wrappers';
+
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
 export default defineConfig(() => {
   return {
@@ -13,6 +16,9 @@ export default defineConfig(() => {
       vueRouterMode: 'hash',
       vueOptionsAPI: false,
       typescript: { strict: true, vueShim: true },
+      env: {
+        APP_VERSION: version,
+      },
     },
 
     devServer: {
