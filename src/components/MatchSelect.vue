@@ -17,6 +17,12 @@
           <q-item-label caption>
             {{ opt.tournament }} &middot;
             {{ formatDate(opt.date, opt.isDateConfirmed) }}
+            <q-badge
+              v-if="!opt.isDateConfirmed"
+              color="negative"
+              label="дата не подтверждена"
+              class="q-ml-xs"
+            />
           </q-item-label>
           <q-item-label caption>
             {{ opt.stadium }}
@@ -36,6 +42,12 @@
       <span v-if="opt">
         {{ opt.team }} vs {{ opt.vs }} &middot;
         {{ formatDate(opt.date, opt.isDateConfirmed) }}
+        <q-badge
+          v-if="!opt.isDateConfirmed"
+          color="negative"
+          label="дата не подтверждена"
+          class="q-ml-xs"
+        />
       </span>
     </template>
   </q-select>
@@ -62,13 +74,11 @@ function formatDate(dateStr: string, isConfirmed: boolean): string {
   const date = new Date(dateStr);
 
   if (!isConfirmed) {
-    return (
-      date.toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }) + ' (дата не подтверждена)'
-    );
+    return date.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
   }
 
   return date.toLocaleDateString('ru-RU', {
