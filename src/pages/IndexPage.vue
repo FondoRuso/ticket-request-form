@@ -7,7 +7,7 @@
           <div class="text-h5 q-mb-lg">Спасибо за заявку</div>
           <q-btn
             label="Отправить ещё одну"
-            color="primary"
+            class="submit-btn"
             no-caps
             @click="handleNewRequest"
           />
