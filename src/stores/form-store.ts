@@ -55,17 +55,7 @@ export const useFormStore = defineStore(
     }
 
     function resetForm() {
-      memberName.value = '';
-      phone.value = '';
-      telegram.value = '';
-      email.value = '';
       ticketCategory.value = null;
-      personalData.value = {
-        firstName: '',
-        lastName: '',
-        birthDate: '',
-        documentNumber: '',
-      };
       selectedMatch.value = null;
       submitted.value = false;
     }
