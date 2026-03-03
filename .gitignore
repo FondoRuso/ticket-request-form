@@ -7,3 +7,5 @@ node_modules
 /src-cordova
 /.quasar
 /quasar.config.*.temporary.compiled*
+
+/public/data.json
