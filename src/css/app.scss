@@ -1,3 +1,7 @@
-body.body--dark a {
-  color: #90caf9;
+body.body--dark {
+  --q-primary: #9B7BC8;
+
+  a {
+    color: #BB9FDB;
+  }
 }
