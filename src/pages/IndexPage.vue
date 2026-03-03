@@ -87,6 +87,7 @@
           <PersonalDataBlock
             v-if="showPersonalData"
             v-model="formStore.personalData"
+            class="q-mt-lg"
           />
 
           <q-btn
