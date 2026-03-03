@@ -17,12 +17,9 @@
           <q-item-label caption>
             {{ opt.tournament }} &middot;
             {{ formatDate(opt.date, opt.isDateConfirmed) }}
-            <q-badge
-              v-if="!opt.isDateConfirmed"
-              color="negative"
-              label="дата не подтверждена"
-              class="q-ml-xs"
-            />
+          </q-item-label>
+          <q-item-label v-if="!opt.isDateConfirmed" caption class="text-negative">
+            Дата и время не подтверждены
           </q-item-label>
           <q-item-label caption>
             {{ opt.stadium }}
@@ -32,7 +29,7 @@
               label="Дома"
               class="q-ml-xs"
             />
-            <q-badge v-else color="orange" label="В гостях" class="q-ml-xs" />
+            <q-badge v-else color="grey" label="В гостях" class="q-ml-xs" />
             <q-badge
               v-if="opt.isWomen"
               color="grey"
@@ -54,12 +51,9 @@
       <span v-if="opt">
         {{ opt.team }} vs {{ opt.vs }} &middot;
         {{ formatDate(opt.date, opt.isDateConfirmed) }}
-        <q-badge
-          v-if="!opt.isDateConfirmed"
-          color="negative"
-          label="дата не подтверждена"
-          class="q-ml-xs"
-        />
+        <span v-if="!opt.isDateConfirmed" class="text-negative q-ml-xs">
+          Дата и время не подтверждены
+        </span>
       </span>
     </template>
   </q-select>
