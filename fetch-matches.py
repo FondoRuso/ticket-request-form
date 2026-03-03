@@ -51,6 +51,13 @@ def to_madrid_iso(dt_str):
     return madrid_dt.isoformat()
 
 
+HOME_VENUES = ("Bernabéu", "Alfredo Di Stéfano", "Ciudad Real Madrid")
+
+
+def is_home_venue(venue_name):
+    return any(v in venue_name for v in HOME_VENUES)
+
+
 def parse_match(m):
     squad_label = m.get("squad", {}).get("squadLabel", "")
     if not squad_label.startswith("Fútbol"):
@@ -64,11 +71,11 @@ def parse_match(m):
     if match_type is None:
         return None
 
-    at_home = m["playAsHome"]
+    at_home = m["playAsHome"] or is_home_venue(m["venue"]["name"])
     return {
         "type": match_type,
-        "team": m["homeTeam"]["name"] if at_home else m["awayTeam"]["name"],
-        "vs": m["awayTeam"]["name"] if at_home else m["homeTeam"]["name"],
+        "team": m["homeTeam"]["name"],
+        "vs": m["awayTeam"]["name"],
         "tournament": m["competition"]["name"],
         "stadium": m["venue"]["name"],
         "atHome": at_home,
