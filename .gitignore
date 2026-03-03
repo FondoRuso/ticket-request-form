@@ -1,0 +1,9 @@
+.DS_Store
+.thumbs.db
+node_modules
+
+/dist
+/src-capacitor
+/src-cordova
+/.quasar
+/quasar.config.*.temporary.compiled*

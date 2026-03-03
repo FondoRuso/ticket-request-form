@@ -1,0 +1,28 @@
+{
+  "name": "ticket-request-form",
+  "version": "0.0.1",
+  "description": "Ticket request form for Fondo Ruso",
+  "productName": "Ticket Request Form",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "lint": "eslint --ext .js,.ts,.vue ./src"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.16.0",
+    "pinia": "^2.3.0",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "quasar": "^2.17.0",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^2.1.0",
+    "@types/node": "^22.0.0",
+    "autoprefixer": "^10.4.27",
+    "typescript": "~5.7.0",
+    "vue-tsc": "^2.2.0"
+  }
+}
