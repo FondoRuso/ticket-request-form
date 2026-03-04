@@ -7,7 +7,11 @@ declare namespace NodeJS {
 
     NOCODB_API_URL: string
     NOCODB_API_TOKEN: string
+
     NOCODB_MEMBERS_TABLE_ID: string
     NOCODB_MEMBERS_VIEW_ID: string
+
+    NOCODB_REQUESTS_TABLE_ID: string
+    NOCODB_REQUESTS_VIEW_URL: string
   }
 }

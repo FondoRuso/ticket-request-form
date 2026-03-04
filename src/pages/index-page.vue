@@ -5,6 +5,13 @@
       <template v-if="formStore.submitted">
         <div class="full-width column items-center q-mt-xl q-pt-xl">
           <div class="text-h5 q-mb-lg">Спасибо за заявку</div>
+          <a
+            :href="requestsViewUrl"
+            target="_blank"
+            class="app-link app-link--underline q-mb-lg"
+          >
+            Отследить статус заявки
+          </a>
           <q-btn
             label="Отправить ещё одну"
             color="primary"
@@ -70,7 +77,7 @@
 
           <q-input
             v-model="formStore.email"
-            label="Email"
+            label="Электропочта"
             type="email"
             hint="Внимательно проверяй почту, туда будут приходить оповещения по статусу заявки"
             debounce="500"
@@ -159,11 +166,31 @@ import MatchInfoDialogContent from 'components/match-info-dialog-content.vue'
 import MatchSelect from 'components/match-select.vue'
 import PersonalDataBlock from 'components/personal-data-block.vue'
 import type { QForm } from 'quasar'
+import { useQuasar } from 'quasar'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
 import { computed, onMounted, ref } from 'vue'
+
+const $q = useQuasar()
+const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
+
+function formatDateForApi(dateStr: string): string {
+  const date = new Date(dateStr)
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(date)
+  const get = (type: string) => parts.find(p => p.type === type)!.value
+  return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`
+}
 
 const formStore = useFormStore()
 const matchesStore = useMatchesStore()
@@ -200,9 +227,48 @@ async function onSubmit() {
   if (!valid) return
 
   const data = formStore.getSubmitData()
-  // TODO: remove
-  console.log('Form submitted:', data)
-  formStore.submitted = true
+  const match = data.match
+
+  const record = {
+    Имя: data.memberName,
+    'Дата матча': match?.date ? formatDateForApi(match.date) : null,
+    Команда: match?.team ?? '',
+    Соперник: match?.vs ?? '',
+    'Где?': match?.atHome ? 'Дома' : 'В гостях',
+    'Категория билета': data.ticketCategory ?? '',
+    Турнир: match?.tournament ?? '',
+    Тип: match?.type ?? '',
+    Телефон: data.phone,
+    Телеграм: data.telegram,
+    Электропочта: data.email,
+    'Имя лат.': data.personalData?.firstName ?? '',
+    'Фамилия лат.': data.personalData?.lastName ?? '',
+    'Дата рождения': data.personalData?.birthDate || null,
+    '№ документа': data.personalData?.documentNumber ?? '',
+    Raw: JSON.stringify(data),
+  }
+
+  try {
+    const res = await fetch(
+      `${process.env.NOCODB_API_URL}/api/v2/tables/${process.env.NOCODB_REQUESTS_TABLE_ID}/records`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xc-token': process.env.NOCODB_API_TOKEN,
+        },
+        body: JSON.stringify(record),
+      },
+    )
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+    formStore.submitted = true
+  } catch (err) {
+    $q.notify({
+      type: 'negative',
+      message: 'Не удалось отправить заявку. Попробуйте ещё раз.',
+    })
+    console.error('Submit error:', err)
+  }
 }
 
 function handleNewRequest() {
