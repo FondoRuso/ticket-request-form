@@ -79,10 +79,7 @@
           />
 
           <div class="row items-center q-mt-lg">
-            <a
-              class="info-link text-primary cursor-pointer"
-              @click="showMatchInfo = true"
-            >
+            <a class="app-link app-link--dotted" @click="showMatchInfo = true">
               Как это работает?
             </a>
 

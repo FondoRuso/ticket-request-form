@@ -5,3 +5,52 @@ body.body--dark {
     color: #bb9fdb;
   }
 }
+
+.app-link {
+  &,
+  &:visited {
+    cursor: pointer;
+    color: var(--q-primary);
+    text-decoration: none;
+
+    &:hover {
+      color: color-mix(in srgb, var(--q-primary) 70%, transparent);
+    }
+  }
+
+  &--underline,
+  &--dotted {
+    &,
+    &:visited {
+      text-decoration-color: color-mix(
+        in srgb,
+        var(--q-primary) 35%,
+        transparent
+      );
+    }
+
+    &:hover {
+      text-decoration-color: color-mix(
+        in srgb,
+        var(--q-primary) 50%,
+        transparent
+      );
+    }
+  }
+
+  &--underline {
+    &,
+    &:hover,
+    &:visited {
+      text-decoration: underline;
+    }
+  }
+
+  &--dotted {
+    &,
+    &:hover,
+    &:visited {
+      text-decoration: underline dotted;
+    }
+  }
+}
