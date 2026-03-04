@@ -101,7 +101,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     public_dir = os.path.join(script_dir, "public")
     os.makedirs(public_dir, exist_ok=True)
-    output_file = os.path.join(public_dir, "data.json")
+    output_file = os.path.join(public_dir, "matches.json")
 
     fd, temp_path = tempfile.mkstemp(dir=public_dir, suffix=".json")
     try:

@@ -29,13 +29,28 @@
           greedy
           @submit.prevent="onSubmit"
         >
-          <q-input
-            v-model="formStore.memberName"
+          <q-select
+            v-model="formStore.member"
             label="Выберите себя из списка"
-            debounce="500"
+            :options="memberOptions"
+            option-label="name"
+            option-value="id"
+            use-input
+            input-debounce="300"
+            fill-input
+            hide-selected
             lazy-rules
             :rules="[requiredRule]"
-          />
+            @filter="filterMembers"
+          >
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  Нет результатов
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
 
           <q-input
             v-model="formStore.phone"
@@ -132,11 +147,26 @@ import type { QForm } from 'quasar'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
+import { useMembersStore, type Member } from 'stores/members-store'
 import { computed, onMounted, ref } from 'vue'
 
 const formStore = useFormStore()
 const matchesStore = useMatchesStore()
+const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const memberOptions = ref<Member[]>([])
+
+async function filterMembers(val: string, update: (fn: () => void) => void) {
+  await membersStore.fetchMembers()
+  update(() => {
+    const needle = val.toLowerCase()
+    memberOptions.value = !val
+      ? membersStore.members
+      : membersStore.members.filter((m) =>
+          m.name.toLowerCase().includes(needle),
+        )
+  })
+}
 
 const filteredMatches = computed(() =>
   matchesStore.matches.filter(m => {

@@ -9,4 +9,5 @@ node_modules
 /.quasar
 /quasar.config.*.temporary.compiled*
 
-/public/data.json
+/public/matches.json
+/public/members.json

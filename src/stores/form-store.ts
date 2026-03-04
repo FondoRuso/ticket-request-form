@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { Member } from './members-store'
 
 export interface Match {
   type: string
@@ -30,7 +31,7 @@ export const TICKET_CATEGORIES = [
 export const useFormStore = defineStore(
   'ticket-form',
   () => {
-    const memberName = ref('')
+    const member = ref<Member | null>(null)
     const phone = ref('')
     const telegram = ref('')
     const email = ref('')
@@ -51,7 +52,8 @@ export const useFormStore = defineStore(
 
     function getSubmitData() {
       const base = {
-        memberName: memberName.value,
+        memberId: member.value?.id ?? null,
+        memberName: member.value?.name ?? '',
         phone: phone.value,
         telegram: telegram.value,
         email: email.value,
@@ -72,7 +74,7 @@ export const useFormStore = defineStore(
     }
 
     return {
-      memberName,
+      member,
       phone,
       telegram,
       email,
@@ -90,7 +92,7 @@ export const useFormStore = defineStore(
   {
     persist: {
       paths: [
-        'memberName',
+        'member',
         'phone',
         'telegram',
         'email',

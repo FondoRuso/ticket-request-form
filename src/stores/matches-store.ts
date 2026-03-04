@@ -11,7 +11,7 @@ export const useMatchesStore = defineStore('matches', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/data.json')
+      const response = await fetch('/matches.json')
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       matches.value = await response.json()
     } catch (e) {
