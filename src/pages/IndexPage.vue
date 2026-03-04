@@ -66,9 +66,15 @@
             :rules="[requiredRule, emailRule]"
           />
 
+          <div class="row q-gutter-x-md q-mt-lg">
+            <q-checkbox v-model="formStore.showAway" label="Гостевые" dense />
+            <q-checkbox v-model="formStore.showWomen" label="Женские" dense />
+            <q-checkbox v-model="formStore.showCantera" label="Кантера" dense />
+          </div>
+
           <MatchSelect
             v-model="formStore.selectedMatch"
-            :matches="matchesStore.matches"
+            :matches="filteredMatches"
             :loading="matchesStore.loading"
           />
 
@@ -123,6 +129,15 @@ const ticketCategoryOptions = [
   'Центр самый верх',
   'Третий или четвёртый ярус за воротами',
 ]
+
+const filteredMatches = computed(() =>
+  matchesStore.matches.filter(m => {
+    if (!formStore.showAway && !m.atHome) return false
+    if (!formStore.showWomen && m.isWomen) return false
+    if (!formStore.showCantera && m.isCantera) return false
+    return true
+  }),
+)
 
 const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,

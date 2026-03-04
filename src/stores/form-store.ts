@@ -28,6 +28,9 @@ export const useFormStore = defineStore(
     const phone = ref('')
     const telegram = ref('')
     const email = ref('')
+    const showAway = ref(true)
+    const showWomen = ref(true)
+    const showCantera = ref(true)
     const ticketCategory = ref<string | null>(null)
     const personalData = ref<PersonalData>({
       firstName: '',
@@ -67,6 +70,9 @@ export const useFormStore = defineStore(
       phone,
       telegram,
       email,
+      showAway,
+      showWomen,
+      showCantera,
       ticketCategory,
       personalData,
       selectedMatch,
@@ -77,7 +83,16 @@ export const useFormStore = defineStore(
   },
   {
     persist: {
-      paths: ['memberName', 'phone', 'telegram', 'email', 'personalData'],
+      paths: [
+        'memberName',
+        'phone',
+        'telegram',
+        'email',
+        'personalData',
+        'showAway',
+        'showWomen',
+        'showCantera',
+      ],
     },
   },
 )
