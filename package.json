@@ -2,7 +2,7 @@
   "name": "ticket-request-form",
   "version": "0.0.1",
   "description": "Ticket request form for members of Fondo Ruso",
-  "productName": "Ticket Request Form",
+  "productName": "Заявка на билет — Fondo Ruso",
   "private": true,
   "type": "module",
   "scripts": {
