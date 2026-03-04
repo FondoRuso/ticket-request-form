@@ -153,11 +153,11 @@
 </template>
 
 <script setup lang="ts">
-import AppFooter from 'components/AppFooter.vue'
-import AppHeader from 'components/AppHeader.vue'
-import MatchInfoDialogContent from 'components/MatchInfoDialogContent.vue'
-import MatchSelect from 'components/MatchSelect.vue'
-import PersonalDataBlock from 'components/PersonalDataBlock.vue'
+import AppFooter from 'components/app-footer.vue'
+import AppHeader from 'components/app-header.vue'
+import MatchInfoDialogContent from 'components/match-info-dialog-content.vue'
+import MatchSelect from 'components/match-select.vue'
+import PersonalDataBlock from 'components/personal-data-block.vue'
 import type { QForm } from 'quasar'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'

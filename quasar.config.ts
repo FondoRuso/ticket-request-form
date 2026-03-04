@@ -5,6 +5,10 @@ const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
 export default defineConfig(() => {
   return {
+    sourceFiles: {
+      rootComponent: 'src/app.vue',
+    },
+
     boot: ['defaults'],
 
     css: ['app.scss'],
