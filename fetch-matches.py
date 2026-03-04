@@ -72,10 +72,12 @@ def parse_match(m):
         return None
 
     at_home = m["playAsHome"] or is_home_venue(m["venue"]["name"])
+    team = m["homeTeam"]["name"] if at_home else m["awayTeam"]["name"]
+    vs = m["awayTeam"]["name"] if at_home else m["homeTeam"]["name"]
     return {
         "type": match_type,
-        "team": m["homeTeam"]["name"],
-        "vs": m["awayTeam"]["name"],
+        "team": team,
+        "vs": vs,
         "tournament": m["competition"]["name"],
         "stadium": m["venue"]["name"],
         "atHome": at_home,

@@ -12,7 +12,10 @@
     <template #option="{ opt, itemProps }">
       <q-item v-bind="itemProps">
         <q-item-section>
-          <q-item-label>{{ opt.team }} vs {{ opt.vs }}</q-item-label>
+          <q-item-label v-if="opt.atHome"
+            >{{ opt.team }} vs {{ opt.vs }}</q-item-label
+          >
+          <q-item-label v-else>{{ opt.vs }} vs {{ opt.team }}</q-item-label>
           <q-item-label caption>
             {{ opt.tournament }} &middot;
             {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
@@ -52,7 +55,9 @@
 
     <template #selected-item="{ opt }">
       <span v-if="opt">
-        {{ opt.team }} vs {{ opt.vs }} &middot;
+        <template v-if="opt.atHome">{{ opt.team }} vs {{ opt.vs }}</template>
+        <template v-else>{{ opt.vs }} vs {{ opt.team }}</template>
+        &middot;
         {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
         <span v-if="!opt.isDateConfirmed" class="text-negative q-ml-xs">
           Дата и время не подтверждены
@@ -78,6 +83,9 @@ defineEmits<{
 }>()
 
 function formatMatchLabel(match: Match): string {
-  return `${match.team} vs ${match.vs} — ${formatMatchDate(match.date, match.isDateConfirmed)}`
+  const label = match.atHome
+    ? `${match.team} vs ${match.vs}`
+    : `${match.vs} vs ${match.team}`
+  return `${label} — ${formatMatchDate(match.date, match.isDateConfirmed)}`
 }
 </script>
