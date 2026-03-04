@@ -30,7 +30,6 @@ export default defineConfig(() => {
         dark: 'auto',
         ripple: false,
       },
-      plugins: [],
     },
   }
 })

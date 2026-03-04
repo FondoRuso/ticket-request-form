@@ -78,10 +78,25 @@
             :rules="[requiredRule, emailRule]"
           />
 
-          <div class="row q-gutter-x-md q-mt-lg">
-            <q-checkbox v-model="formStore.showAway" label="Гостевые" dense />
-            <q-checkbox v-model="formStore.showWomen" label="Женские" dense />
-            <q-checkbox v-model="formStore.showCantera" label="Кантера" dense />
+          <div class="row items-center q-mt-lg">
+            <a
+              class="info-link text-primary cursor-pointer"
+              @click="showMatchInfo = true"
+            >
+              Как это работает?
+            </a>
+
+            <q-space />
+
+            <div class="row q-gutter-x-md">
+              <q-checkbox v-model="formStore.showAway" label="Гостевые" dense />
+              <q-checkbox v-model="formStore.showWomen" label="Женские" dense />
+              <q-checkbox
+                v-model="formStore.showCantera"
+                label="Кантера"
+                dense
+              />
+            </div>
           </div>
 
           <q-banner
@@ -133,6 +148,8 @@
         </q-form>
 
         <AppFooter />
+
+        <MatchInfoDialogContent v-model="showMatchInfo" />
       </template>
     </div>
   </q-page>
@@ -141,6 +158,7 @@
 <script setup lang="ts">
 import AppFooter from 'components/AppFooter.vue'
 import AppHeader from 'components/AppHeader.vue'
+import MatchInfoDialogContent from 'components/MatchInfoDialogContent.vue'
 import MatchSelect from 'components/MatchSelect.vue'
 import PersonalDataBlock from 'components/PersonalDataBlock.vue'
 import type { QForm } from 'quasar'
@@ -154,6 +172,7 @@ const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const showMatchInfo = ref(false)
 const memberOptions = ref<Member[]>([])
 
 async function filterMembers(val: string, update: (fn: () => void) => void) {
@@ -162,9 +181,7 @@ async function filterMembers(val: string, update: (fn: () => void) => void) {
     const needle = val.toLowerCase()
     memberOptions.value = !val
       ? membersStore.members
-      : membersStore.members.filter((m) =>
-          m.name.toLowerCase().includes(needle),
-        )
+      : membersStore.members.filter(m => m.name.toLowerCase().includes(needle))
   })
 }
 
@@ -204,4 +221,8 @@ onMounted(() => {
 .page-content
   max-width: 600px
   margin: 0 auto
+
+.info-link
+  text-decoration: underline dotted
+  font-size: 13px
 </style>
