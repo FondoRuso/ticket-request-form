@@ -20,7 +20,7 @@ TYPE_PREFIXES = [
 
 
 def build_url():
-    tomorrow = datetime.now(timezone.utc).date() + timedelta(days=1)
+    tomorrow = datetime.now(MADRID_TZ).date() + timedelta(days=1)
     # +2 months: same day, 2 months ahead
     month = tomorrow.month + 2
     year = tomorrow.year + (month - 1) // 12
