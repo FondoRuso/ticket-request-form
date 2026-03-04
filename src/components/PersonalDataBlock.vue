@@ -14,7 +14,6 @@
       <q-input
         :model-value="modelValue.firstName"
         label="Имя латиницей"
-        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -24,7 +23,6 @@
       <q-input
         :model-value="modelValue.lastName"
         label="Фамилия латиницей"
-        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -34,7 +32,6 @@
       <q-input
         :model-value="formattedBirthDate"
         label="Дата рождения"
-        outlined
         lazy-rules
         :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
         readonly
@@ -65,7 +62,6 @@
       <q-input
         :model-value="modelValue.documentNumber"
         label="Номер документа"
-        outlined
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -76,8 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { formatBirthDate } from 'src/utils/date'
+import { requiredRule } from 'src/utils/validation'
 import type { PersonalData } from 'stores/form-store'
+import { computed } from 'vue'
 
 const props = defineProps<{
   modelValue: PersonalData
@@ -91,14 +89,9 @@ function update(field: keyof PersonalData, value: string) {
   emit('update:modelValue', { ...props.modelValue, [field]: value })
 }
 
-const requiredRule = (val: string) =>
-  (!!val && val.trim().length > 0) || 'Обязательное поле'
-
-const formattedBirthDate = computed(() => {
-  if (!props.modelValue.birthDate) return ''
-  const date = new Date(props.modelValue.birthDate + 'T00:00:00')
-  return date.toLocaleDateString('ru-RU')
-})
+const formattedBirthDate = computed(() =>
+  formatBirthDate(props.modelValue.birthDate),
+)
 </script>
 
 <style scoped lang="sass">

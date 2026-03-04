@@ -7,7 +7,8 @@
           <div class="text-h5 q-mb-lg">Спасибо за заявку</div>
           <q-btn
             label="Отправить ещё одну"
-            class="submit-btn"
+            color="primary"
+            text-color="white"
             no-caps
             @click="handleNewRequest"
           />
@@ -31,7 +32,6 @@
           <q-input
             v-model="formStore.memberName"
             label="Выберите себя из списка"
-            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -40,7 +40,6 @@
           <q-input
             v-model="formStore.phone"
             label="Номер телефона для связи"
-            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -49,7 +48,6 @@
           <q-input
             v-model="formStore.telegram"
             label="Ник в Telegram"
-            outlined
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -59,7 +57,6 @@
             v-model="formStore.email"
             label="Email"
             type="email"
-            outlined
             hint="Внимательно проверяй почту, туда будут приходить оповещения по статусу заявки"
             debounce="500"
             lazy-rules
@@ -72,6 +69,21 @@
             <q-checkbox v-model="formStore.showCantera" label="Кантера" dense />
           </div>
 
+          <q-banner
+            v-if="matchesStore.error"
+            class="text-white bg-negative q-mt-sm"
+            rounded
+          >
+            Не удалось загрузить матчи: {{ matchesStore.error }}
+            <template #action>
+              <q-btn
+                flat
+                label="Повторить"
+                @click="matchesStore.fetchMatches()"
+              />
+            </template>
+          </q-banner>
+
           <MatchSelect
             v-model="formStore.selectedMatch"
             :matches="filteredMatches"
@@ -81,8 +93,7 @@
           <q-select
             v-model="formStore.ticketCategory"
             label="Категория билета"
-            outlined
-            :options="ticketCategoryOptions"
+            :options="TICKET_CATEGORIES"
             emit-value
             map-options
             clearable
@@ -98,7 +109,9 @@
           <q-btn
             label="Отправить заявку"
             type="submit"
-            class="q-mt-xl full-width submit-btn"
+            class="q-mt-xl full-width"
+            color="primary"
+            text-color="white"
             size="lg"
             no-caps
           />
@@ -111,24 +124,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type { QForm } from 'quasar'
-import { useFormStore } from 'stores/form-store'
-import { useMatchesStore } from 'stores/matches-store'
-import AppHeader from 'components/AppHeader.vue'
 import AppFooter from 'components/AppFooter.vue'
+import AppHeader from 'components/AppHeader.vue'
 import MatchSelect from 'components/MatchSelect.vue'
 import PersonalDataBlock from 'components/PersonalDataBlock.vue'
+import type { QForm } from 'quasar'
+import { emailRule, requiredRule } from 'src/utils/validation'
+import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'
+import { useMatchesStore } from 'stores/matches-store'
+import { computed, onMounted, ref } from 'vue'
 
 const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const formRef = ref<QForm | null>(null)
-
-const ticketCategoryOptions = [
-  'Нижний ряд ближе к угловому флагу',
-  'Центр самый верх',
-  'Третий или четвёртый ярус за воротами',
-]
 
 const filteredMatches = computed(() =>
   matchesStore.matches.filter(m => {
@@ -143,17 +151,12 @@ const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,
 )
 
-const requiredRule = (val: string) =>
-  (!!val && val.trim().length > 0) || 'Обязательное поле'
-
-const emailRule = (val: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || 'Введите корректный email'
-
 async function onSubmit() {
   const valid = await formRef.value?.validate()
   if (!valid) return
 
   const data = formStore.getSubmitData()
+  // TODO: remove
   console.log('Form submitted:', data)
   formStore.submitted = true
 }
@@ -171,8 +174,4 @@ onMounted(() => {
 .page-content
   max-width: 600px
   margin: 0 auto
-
-.submit-btn
-  background-color: $primary !important
-  color: white
 </style>

@@ -21,6 +21,12 @@ export interface PersonalData {
   documentNumber: string
 }
 
+export const TICKET_CATEGORIES = [
+  'Нижний ряд ближе к угловому флагу',
+  'Центр самый верх',
+  'Третий или четвёртый ярус за воротами',
+]
+
 export const useFormStore = defineStore(
   'ticket-form',
   () => {

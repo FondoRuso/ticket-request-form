@@ -28,12 +28,12 @@
 
 .site-link
   text-decoration: none
-  color: #1d1d1b
+  color: $dark
   font-weight: 700
   letter-spacing: -0.02em
 
   .body--dark &
-    color: #e0e0e0
+    color: $grey-4
 
   &__tld
     font-weight: 400
