@@ -1,5 +1,6 @@
-export const requiredRule = (val: string) =>
-  (!!val && val.trim().length > 0) || 'Обязательное поле'
+export const requiredRule = (val: unknown) =>
+  (val !== null && val !== undefined && String(val).trim().length > 0) ||
+  'Обязательное поле'
 
 export const requiredMatchRule = (val: unknown) =>
   val !== null || 'Обязательное поле'
