@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "quasar dev",
-    "build": "quasar build",
+    "build": "quasar build && node prerender.js",
     "format": "prettier --write \"src/**/*.{ts,vue,scss,sass,css,json}\" \"*.{json,js,ts}\""
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "@quasar/app-vite": "^2.1.0",
     "@types/node": "^22.0.0",
     "autoprefixer": "^10.4.27",
+    "puppeteer": "^24.38.0",
     "typescript": "~5.7.0",
     "vue-tsc": "^2.2.0"
   }
