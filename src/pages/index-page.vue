@@ -250,14 +250,13 @@ async function onSubmit() {
 
   try {
     const res = await fetch(
-      `${process.env.NOCODB_API_URL}/api/v2/tables/${process.env.NOCODB_REQUESTS_TABLE_ID}/records`,
+      `${process.env.NOCODB_API_URL}/api/v2/public/shared-view/${process.env.NOCODB_REQUESTS_FORM_PUBLIC_UUID}/rows`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xc-token': process.env.NOCODB_API_TOKEN,
         },
-        body: JSON.stringify(record),
+        body: JSON.stringify({ data: record }),
       },
     )
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)

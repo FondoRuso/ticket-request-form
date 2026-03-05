@@ -11,7 +11,7 @@ declare namespace NodeJS {
     NOCODB_MEMBERS_TABLE_ID: string
     NOCODB_MEMBERS_VIEW_ID: string
 
-    NOCODB_REQUESTS_TABLE_ID: string
+    NOCODB_REQUESTS_FORM_PUBLIC_UUID: string
     NOCODB_REQUESTS_VIEW_URL: string
   }
 }
