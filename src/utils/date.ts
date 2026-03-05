@@ -17,6 +17,7 @@ export function formatMatchDate(dateStr: string, isConfirmed: boolean): string {
 
   if (!isConfirmed) {
     return date.toLocaleDateString(LOCALE, {
+      timeZone: 'Europe/Madrid',
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -24,6 +25,7 @@ export function formatMatchDate(dateStr: string, isConfirmed: boolean): string {
   }
 
   return date.toLocaleDateString(LOCALE, {
+    timeZone: 'Europe/Madrid',
     weekday: 'short',
     day: 'numeric',
     month: 'long',

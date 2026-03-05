@@ -9,6 +9,8 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none text-body1">
+        <p>Время матчей указано по&nbsp;Мадриду.</p>
+
         <p>
           Расписание обновляется ежедневно в&nbsp;{{ localTime }} по&nbsp;вашему
           местному времени на&nbsp;основе данных
