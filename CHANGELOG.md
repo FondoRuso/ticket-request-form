@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog].
 ### Fixed
 
 - Запуск Puppeteer от root в Docker (--no-sandbox)
+- Права доступа на сгенерированные JSON-файлы (0644 вместо 0600)
 
 ### Security
 

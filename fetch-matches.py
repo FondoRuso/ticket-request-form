@@ -112,6 +112,7 @@ def main():
             json.dump(matches, f, indent=2, ensure_ascii=False)
             f.write("\n")
         os.replace(temp_path, output_file)
+        os.chmod(output_file, 0o644)
     except:
         os.unlink(temp_path)
         raise
