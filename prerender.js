@@ -48,7 +48,10 @@ async function prerender() {
   const server = await startServer()
   console.log(`Static server running on port ${PORT}`)
 
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: process.getuid?.() === 0 ? ['--no-sandbox'] : [],
+  })
   const page = await browser.newPage()
 
   await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' })
