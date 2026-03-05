@@ -125,6 +125,7 @@
           />
 
           <q-select
+            v-if="showTicketCategory"
             v-model="formStore.ticketCategory"
             label="Категория билета"
             :options="TICKET_CATEGORIES"
@@ -217,6 +218,11 @@ const filteredMatches = computed(() =>
     return true
   }),
 )
+
+const showTicketCategory = computed(() => {
+  const m = formStore.selectedMatch
+  return m !== null && m.atHome && !m.isWomen && !m.isCantera
+})
 
 const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,
