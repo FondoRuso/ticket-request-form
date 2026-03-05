@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog].
 
 ### Added
 
+- README.md с описанием проекта и инструкцией по развёртыванию
+- Dockerfile для сборки и развёртывания (multi-stage: Node.js + nginx + Python)
+- Конфигурация nginx для SPA с history mode
+- Встроенный cron job для ежедневного обновления данных (midnight CET)
+
 ### Changed
 
 ### Deprecated
