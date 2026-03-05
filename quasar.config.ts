@@ -17,7 +17,7 @@ export default defineConfig(() => {
 
     build: {
       target: { browser: ['es2022', 'firefox115', 'chrome115', 'safari14'] },
-      vueRouterMode: 'hash',
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       vueOptionsAPI: false,
       typescript: { strict: true, vueShim: true },
       env: {
