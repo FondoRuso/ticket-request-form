@@ -51,7 +51,8 @@ export const useFormStore = defineStore(
     const submitted = ref(false)
 
     function getSubmitData() {
-      const base = {
+      const isAway = selectedMatch.value && !selectedMatch.value.atHome
+      return {
         memberId: member.value?.id ?? null,
         memberName: member.value?.name ?? '',
         phone: phone.value,
@@ -59,12 +60,8 @@ export const useFormStore = defineStore(
         email: email.value,
         match: selectedMatch.value,
         ticketCategory: ticketCategory.value,
+        personalData: isAway ? { ...personalData.value } : null,
       }
-
-      if (selectedMatch.value && !selectedMatch.value.atHome) {
-        return { ...base, personalData: { ...personalData.value } }
-      }
-      return base
     }
 
     function resetForm() {
