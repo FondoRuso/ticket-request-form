@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getCetDate } from 'src/utils/date'
 import type { Match } from './form-store'
 
 export const useMatchesStore = defineStore('matches', () => {
   const matches = ref<Match[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  let lastFetchDate: string | null = null
 
   async function fetchMatches() {
     loading.value = true
@@ -14,6 +16,7 @@ export const useMatchesStore = defineStore('matches', () => {
       const response = await fetch('/matches.json')
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       matches.value = await response.json()
+      lastFetchDate = getCetDate()
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Failed to load matches'
     } finally {
@@ -21,5 +24,17 @@ export const useMatchesStore = defineStore('matches', () => {
     }
   }
 
-  return { matches, loading, error, fetchMatches }
+  async function refreshMatches() {
+    if (getCetDate() === lastFetchDate) return
+    try {
+      const response = await fetch('/matches.json')
+      if (!response.ok) return
+      matches.value = await response.json()
+      lastFetchDate = getCetDate()
+    } catch {
+      // silently ignore — user keeps existing data
+    }
+  }
+
+  return { matches, loading, error, fetchMatches, refreshMatches }
 })

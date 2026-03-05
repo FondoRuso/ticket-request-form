@@ -8,6 +8,7 @@
     lazy-rules
     :rules="[requiredMatchRule]"
     @update:model-value="$emit('update:modelValue', $event)"
+    @popup-show="matchesStore.refreshMatches()"
   >
     <template #option="{ opt, itemProps }">
       <q-item v-bind="itemProps">
@@ -71,6 +72,9 @@
 import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
 import type { Match } from 'stores/form-store'
+import { useMatchesStore } from 'stores/matches-store'
+
+const matchesStore = useMatchesStore()
 
 defineProps<{
   modelValue: Match | null
