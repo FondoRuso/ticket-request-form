@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+import shutil
 import sys
 import tempfile
 from urllib.parse import urlencode, quote
@@ -91,6 +92,10 @@ def main():
     except:
         os.unlink(temp_path)
         raise
+
+    dist_file = os.path.join(script_dir, "dist", "spa", "members.json")
+    if os.path.isdir(os.path.dirname(dist_file)):
+        shutil.copy2(output_file, dist_file)
 
     print(f"Saved {len(members)} members to {output_file}")
 
