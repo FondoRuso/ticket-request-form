@@ -72,7 +72,7 @@
             label="Ник в Telegram"
             debounce="500"
             lazy-rules
-            :rules="[requiredRule]"
+            class="q-mb-md"
           />
 
           <q-input
