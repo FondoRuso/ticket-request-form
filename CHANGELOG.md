@@ -6,15 +6,7 @@ The format is based on [Keep a Changelog].
 
 ### Added
 
-- Добавлен файл CHANGELOG.md
-- Отображение времени матчей в мадридском часовом поясе (Europe/Madrid)
-- Категория билета показывается только для домашних матчей первой команды
-- Предупреждение при отправке заявки после рекомендованного дедлайна для матчей первой команды
-
 ### Changed
-
-- Поле Telegram теперь необязательное
-- Режим роутера Vue Router переключён с hash на history
 
 ### Deprecated
 
@@ -25,6 +17,20 @@ The format is based on [Keep a Changelog].
 ### Security
 
 ### Internal
+
+## [1.1.0] - 2026-03-05
+
+### Added
+
+- Добавлен файл CHANGELOG.md
+- Отображение времени матчей в мадридском часовом поясе (Europe/Madrid)
+- Категория билета показывается только для домашних матчей первой команды
+- Предупреждение при отправке заявки после рекомендованного дедлайна для матчей первой команды
+
+### Changed
+
+- Поле Telegram теперь необязательное
+- Режим роутера Vue Router переключён с hash на history
 
 ## [1.0.0] - 2026-03-05
 
@@ -55,4 +61,5 @@ The format is based on [Keep a Changelog].
 <!-- Links to versions -->
 
 [unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...HEAD
+[1.1.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/FondoRuso/ticket-request-form/releases/tag/v1.0.0
