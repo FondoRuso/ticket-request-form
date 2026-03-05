@@ -6,11 +6,6 @@ The format is based on [Keep a Changelog].
 
 ### Added
 
-- README.md с описанием проекта и инструкцией по развёртыванию
-- Dockerfile для сборки и развёртывания (multi-stage: Node.js + nginx + Python)
-- Конфигурация nginx для SPA с history mode
-- Встроенный cron job для ежедневного обновления данных (midnight CET)
-
 ### Changed
 
 ### Deprecated
@@ -19,12 +14,23 @@ The format is based on [Keep a Changelog].
 
 ### Fixed
 
-- Запуск Puppeteer от root в Docker (--no-sandbox)
-- Права доступа на сгенерированные JSON-файлы (0644 вместо 0600)
-
 ### Security
 
 ### Internal
+
+## [1.2.0] - 2026-03-05
+
+### Added
+
+- README.md с описанием проекта и инструкцией по развёртыванию
+- Dockerfile для сборки и развёртывания (multi-stage: Node.js + nginx + Python)
+- Конфигурация nginx для SPA с history mode
+- Встроенный cron job для ежедневного обновления данных (midnight CET)
+
+### Fixed
+
+- Запуск Puppeteer от root в Docker (--no-sandbox)
+- Права доступа на сгенерированные JSON-файлы (0644 вместо 0600)
 
 ## [1.1.0] - 2026-03-05
 
@@ -68,6 +74,7 @@ The format is based on [Keep a Changelog].
 
 <!-- Links to versions -->
 
-[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/FondoRuso/ticket-request-form/releases/tag/v1.0.0
