@@ -1,5 +1,8 @@
 const LOCALE = 'ru-RU'
 
+export const DEADLINE_DAYS_HOME = 20
+export const DEADLINE_DAYS_AWAY = 25
+
 export function getCetDate(): string {
   const now = new Date()
   const parts = new Intl.DateTimeFormat('en', {

@@ -155,6 +155,14 @@
         <AppFooter />
 
         <MatchInfoDialogContent v-model="showMatchInfo" />
+
+        <DeadlineWarningDialog
+          v-model="showDeadlineWarning"
+          :match="formStore.selectedMatch"
+          :days-left="deadlineDaysLeft"
+          @confirm="onDeadlineConfirm"
+          @cancel="onDeadlineCancel"
+        />
       </template>
     </div>
   </q-page>
@@ -163,11 +171,13 @@
 <script setup lang="ts">
 import AppFooter from 'components/app-footer.vue'
 import AppHeader from 'components/app-header.vue'
+import DeadlineWarningDialog from 'components/deadline-warning-dialog.vue'
 import MatchInfoDialogContent from 'components/match-info-dialog-content.vue'
 import MatchSelect from 'components/match-select.vue'
 import PersonalDataBlock from 'components/personal-data-block.vue'
 import type { QForm } from 'quasar'
 import { useQuasar } from 'quasar'
+import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
@@ -198,7 +208,10 @@ const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
 const showMatchInfo = ref(false)
+const showDeadlineWarning = ref(false)
+const deadlineDaysLeft = ref(0)
 const memberOptions = ref<Member[]>([])
+let deadlineResolve: ((confirmed: boolean) => void) | null = null
 
 async function filterMembers(val: string, update: (fn: () => void) => void) {
   await membersStore.fetchMembers()
@@ -219,18 +232,57 @@ const filteredMatches = computed(() =>
   }),
 )
 
-const showTicketCategory = computed(() => {
+const isFirstTeam = computed(() => {
   const m = formStore.selectedMatch
-  return m !== null && m.atHome && !m.isWomen && !m.isCantera
+  return m !== null && !m.isWomen && !m.isCantera
 })
+
+const showTicketCategory = computed(
+  () => isFirstTeam.value && formStore.selectedMatch!.atHome,
+)
 
 const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,
 )
 
+function isPastDeadline(): boolean {
+  const m = formStore.selectedMatch
+  if (!m || !isFirstTeam.value) return false
+  const deadlineDays = m.atHome ? DEADLINE_DAYS_HOME : DEADLINE_DAYS_AWAY
+  const msLeft = new Date(m.date).getTime() - Date.now()
+  const days = Math.floor(msLeft / (1000 * 60 * 60 * 24))
+  if (days >= deadlineDays) return false
+  deadlineDaysLeft.value = Math.max(0, days)
+  return true
+}
+
+function confirmDeadline(): Promise<boolean> {
+  return new Promise(resolve => {
+    deadlineResolve = resolve
+    showDeadlineWarning.value = true
+  })
+}
+
+function onDeadlineConfirm() {
+  showDeadlineWarning.value = false
+  deadlineResolve?.(true)
+  deadlineResolve = null
+}
+
+function onDeadlineCancel() {
+  showDeadlineWarning.value = false
+  deadlineResolve?.(false)
+  deadlineResolve = null
+}
+
 async function onSubmit() {
   const valid = await formRef.value?.validate()
   if (!valid) return
+
+  if (isPastDeadline()) {
+    const confirmed = await confirmDeadline()
+    if (!confirmed) return
+  }
 
   const data = formStore.getSubmitData()
   const match = data.match

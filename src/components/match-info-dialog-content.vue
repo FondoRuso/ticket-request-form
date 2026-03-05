@@ -30,8 +30,10 @@
         </p>
 
         <p>
-          Срок подачи заявки&nbsp;— не&nbsp;позднее 20&nbsp;дней
-          до&nbsp;домашнего матча и&nbsp;25&nbsp;дней до&nbsp;гостевого.
+          Срок подачи заявки&nbsp;— не&nbsp;позднее
+          {{ DEADLINE_DAYS_HOME }}&nbsp;дней до&nbsp;домашнего матча и&nbsp;{{
+            DEADLINE_DAYS_AWAY
+          }}&nbsp;дней до&nbsp;гостевого.
         </p>
       </q-card-section>
 
@@ -50,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
+
 defineProps<{
   modelValue: boolean
 }>()
