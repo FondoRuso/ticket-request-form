@@ -22,6 +22,11 @@ export default defineConfig(() => {
       typescript: { strict: true, vueShim: true },
       env: {
         APP_VERSION: version,
+        NOCODB_API_URL: process.env.NOCODB_API_URL,
+        NOCODB_REQUESTS_FORM_PUBLIC_UUID:
+          process.env.NOCODB_REQUESTS_FORM_PUBLIC_UUID,
+        NOCODB_REQUESTS_VIEW_URL: process.env.NOCODB_REQUESTS_VIEW_URL,
+        DATA_BASE_URL: process.env.DATA_BASE_URL,
       },
     },
 
