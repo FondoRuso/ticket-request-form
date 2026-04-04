@@ -8,6 +8,3 @@ node_modules
 /src-cordova
 /.quasar
 /quasar.config.*.temporary.compiled*
-
-/public/matches.json
-/public/members.json

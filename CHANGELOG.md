@@ -1,6 +1,6 @@
 # Changelog
 
-The format is based on [Keep a Changelog].
+The format is based on [Keep a Changelog]
 
 ## [Unreleased]
 

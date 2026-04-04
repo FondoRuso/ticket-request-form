@@ -19,7 +19,7 @@ export const useMembersStore = defineStore('members', () => {
     }
     error.value = null
     try {
-      const response = await fetch('/members.json')
+      const response = await fetch(`${process.env.DATA_BASE_URL}/members.json`)
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       members.value = await response.json()
       lastFetchDate = getCetDate()
@@ -30,7 +30,7 @@ export const useMembersStore = defineStore('members', () => {
 
   async function refreshMembers() {
     try {
-      const response = await fetch('/members.json')
+      const response = await fetch(`${process.env.DATA_BASE_URL}/members.json`)
       if (!response.ok) return
       members.value = await response.json()
       lastFetchDate = getCetDate()

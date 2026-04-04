@@ -13,7 +13,7 @@ export const useMatchesStore = defineStore('matches', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch('/matches.json')
+      const response = await fetch(`${process.env.DATA_BASE_URL}/matches.json`)
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       matches.value = await response.json()
       lastFetchDate = getCetDate()
@@ -27,7 +27,7 @@ export const useMatchesStore = defineStore('matches', () => {
   async function refreshMatches() {
     if (getCetDate() === lastFetchDate) return
     try {
-      const response = await fetch('/matches.json')
+      const response = await fetch(`${process.env.DATA_BASE_URL}/matches.json`)
       if (!response.ok) return
       matches.value = await response.json()
       lastFetchDate = getCetDate()
