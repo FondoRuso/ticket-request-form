@@ -292,7 +292,7 @@ async function onSubmit() {
     'Дата матча': match?.date ? formatDateForApi(match.date) : null,
     Команда: match?.team ?? '',
     Соперник: match?.vs ?? '',
-    'Где?': match?.atHome ? 'Дома' : 'В гостях',
+    'Где?': match?.atHome ? 'Дома' : 'Выезд',
     'Категория билета': data.ticketCategory ?? '',
     Турнир: match?.tournament ?? '',
     Тип: match?.type ?? '',

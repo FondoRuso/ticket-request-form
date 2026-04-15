@@ -36,7 +36,7 @@
               label="Дома"
               class="q-ml-xs"
             />
-            <q-badge v-else color="grey" label="В гостях" class="q-ml-xs" />
+            <q-badge v-else color="grey" label="Выезд" class="q-ml-xs" />
             <q-badge
               v-if="opt.isWomen"
               color="grey"
