@@ -149,6 +149,8 @@
             text-color="white"
             size="lg"
             no-caps
+            :loading="isSubmitting"
+            :disable="isSubmitting"
           />
         </q-form>
 
@@ -207,6 +209,7 @@ const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const isSubmitting = ref(false)
 const showMatchInfo = ref(false)
 const showDeadlineWarning = ref(false)
 const deadlineDaysLeft = ref(0)
@@ -284,6 +287,8 @@ async function onSubmit() {
     if (!confirmed) return
   }
 
+  isSubmitting.value = true
+
   const data = formStore.getSubmitData()
   const match = data.match
 
@@ -325,6 +330,8 @@ async function onSubmit() {
       message: 'Не удалось отправить заявку. Попробуйте ещё раз.',
     })
     console.error('Submit error:', err)
+  } finally {
+    isSubmitting.value = false
   }
 }
 
