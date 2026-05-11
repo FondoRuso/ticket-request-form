@@ -29,13 +29,35 @@ nano .env
 These variables are **baked into the JS bundle at build time**.
 
 | Variable | Description |
-|---|---|
+| --- | --- |
 | `NOCODB_API_URL` | NocoDB instance URL |
 | `NOCODB_REQUESTS_FORM_PUBLIC_UUID` | Public UUID of the ticket request form |
 | `NOCODB_REQUESTS_VIEW_URL` | URL to view submitted requests |
 | `DATA_BASE_URL` | Base URL for `matches.json` and `members.json` (e.g. `https://example.workers.dev`) |
 
 `matches.json` and `members.json` are fetched from `DATA_BASE_URL` at runtime and are maintained by a separate data service.
+
+## Production Deployment
+
+The production site is hosted on Yandex Object Storage (static website hosting). A GitHub Actions workflow (`.github/workflows/deploy-yandex.yml`) deploys on every push to `dev`. Manual runs are available via the **Run workflow** button in the Actions tab.
+
+### Required GitHub Secrets
+
+Add the four [environment variables](#environment-variables) above as GitHub Secrets with identical names, plus Yandex Cloud credentials — an S3-compatible static key of a service account with the `storage.editor` role on the bucket:
+
+| Secret | Description |
+| --- | --- |
+| `YC_ACCESS_KEY_ID` | Key ID from IAM → service account → access keys |
+| `YC_SECRET_ACCESS_KEY` | Secret part, shown only once at creation |
+| `YC_BUCKET_NAME` | Bucket name; **must match the public domain** |
+
+### Cache strategy
+
+The workflow uploads files in three passes with different `Cache-Control` headers:
+
+- `assets/*` (Vite-hashed JS/CSS/fonts) — `public, max-age=31536000, immutable`
+- Other static files (`favicon.ico`, `icons/`, `logo.svg`) — `public, max-age=3600`
+- `index.html` — `no-cache, must-revalidate` (so new deploys land immediately)
 
 ## Deployment with Docker
 
