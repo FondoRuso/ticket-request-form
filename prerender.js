@@ -50,7 +50,7 @@ async function prerender() {
 
   const browser = await puppeteer.launch({
     headless: true,
-    args: process.getuid?.() === 0 ? ['--no-sandbox'] : [],
+    args: process.getuid?.() === 0 || process.env.CI ? ['--no-sandbox'] : [],
   })
   const page = await browser.newPage()
 
