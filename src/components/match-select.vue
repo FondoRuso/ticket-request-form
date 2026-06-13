@@ -54,6 +54,18 @@
       </q-item>
     </template>
 
+    <template #no-option>
+      <q-item>
+        <q-item-section class="text-grey">
+          {{
+            loading
+              ? 'Загружаем матчи...'
+              : 'Матчей по выбранным фильтрам нет'
+          }}
+        </q-item-section>
+      </q-item>
+    </template>
+
     <template #selected-item="{ opt }">
       <span v-if="opt">
         <template v-if="opt.atHome">{{ opt.team }} vs {{ opt.vs }}</template>
