@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog]
 
 ### Fixed
 
+- Заглушка в списке матчей, когда по выбранным фильтрам нет доступных матчей
+
 ### Security
 
 ### Internal
