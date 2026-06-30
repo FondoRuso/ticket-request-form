@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.{ts,vue,scss,sass,css,json}\" \"*.{json,js,ts}\""
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.0",
+    "@quasar/extras": "^1.18.0",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "quasar": "^2.17.0",
