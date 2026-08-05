@@ -9,6 +9,7 @@
             :href="requestsViewUrl"
             target="_blank"
             class="app-link app-link--underline q-mb-lg"
+            @click="track('request_status_opened')"
           >
             Отследить статус заявки
           </a>
@@ -35,6 +36,7 @@
           class="full-width column q-gutter-y-sm"
           greedy
           @submit.prevent="onSubmit"
+          @validation-error="onValidationError"
         >
           <q-select
             v-model="formStore.member"
@@ -86,7 +88,7 @@
           />
 
           <div class="row items-center q-mt-lg">
-            <a class="app-link app-link--dotted" @click="showMatchInfo = true">
+            <a class="app-link app-link--dotted" @click="openMatchInfo">
               Как это работает?
             </a>
 
@@ -94,7 +96,7 @@
 
             <span
               class="row items-center cursor-pointer"
-              @click="showFilters = true"
+              @click="openFilters('link')"
             >
               <a class="app-link app-link--dotted">Фильтры</a>
               <span class="q-ml-xs text-grey">
@@ -111,11 +113,7 @@
           >
             Не удалось загрузить матчи: {{ matchesStore.error }}
             <template #action>
-              <q-btn
-                flat
-                label="Повторить"
-                @click="matchesStore.fetchMatches()"
-              />
+              <q-btn flat label="Повторить" @click="reloadMatches" />
             </template>
           </q-banner>
 
@@ -124,7 +122,7 @@
             :matches="filteredMatches"
             :loading="matchesStore.loading"
             :no-teams-selected="formStore.selectedTeams.length === 0"
-            @open-filters="showFilters = true"
+            @open-filters="openFilters('match_field')"
           />
 
           <q-select
@@ -188,7 +186,12 @@ import MatchSelect from 'components/match-select.vue'
 import PersonalDataBlock from 'components/personal-data-block.vue'
 import type { QForm } from 'quasar'
 import { useQuasar } from 'quasar'
-import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
+import { matchProperties, track } from 'src/utils/analytics'
+import {
+  DEADLINE_DAYS_AWAY,
+  DEADLINE_DAYS_HOME,
+  daysUntilMatch,
+} from 'src/utils/date'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import {
   matchTeamKey,
@@ -198,7 +201,7 @@ import {
 } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const $q = useQuasar()
 const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
@@ -257,10 +260,14 @@ function isPastDeadline(): boolean {
   const m = formStore.selectedMatch
   if (!m || !isFirstTeam.value) return false
   const deadlineDays = m.atHome ? DEADLINE_DAYS_HOME : DEADLINE_DAYS_AWAY
-  const msLeft = new Date(m.date).getTime() - Date.now()
-  const days = Math.floor(msLeft / (1000 * 60 * 60 * 24))
+  const days = daysUntilMatch(m.date)
   if (days >= deadlineDays) return false
   deadlineDaysLeft.value = Math.max(0, days)
+  track('deadline_warning_shown', {
+    atHome: m.atHome,
+    daysLeft: deadlineDaysLeft.value,
+    deadlineDays,
+  })
   return true
 }
 
@@ -271,16 +278,31 @@ function confirmDeadline(): Promise<boolean> {
   })
 }
 
-function onDeadlineConfirm() {
+function resolveDeadline(confirmed: boolean) {
+  track('deadline_warning_resolved', {
+    confirmed,
+    atHome: formStore.selectedMatch?.atHome ?? false,
+    daysLeft: deadlineDaysLeft.value,
+  })
   showDeadlineWarning.value = false
-  deadlineResolve?.(true)
+  deadlineResolve?.(confirmed)
   deadlineResolve = null
 }
 
+function onDeadlineConfirm() {
+  resolveDeadline(true)
+}
+
 function onDeadlineCancel() {
-  showDeadlineWarning.value = false
-  deadlineResolve?.(false)
-  deadlineResolve = null
+  resolveDeadline(false)
+}
+
+// QForm only emits `submit` once validation passes, so a rejected attempt is
+// only observable here.
+function onValidationError() {
+  track('request_incomplete', {
+    missingFields: formStore.missingRequiredFields.join(),
+  })
 }
 
 async function onSubmit() {
@@ -329,6 +351,8 @@ async function onSubmit() {
     Raw: JSON.stringify(data),
   }
 
+  let status = 0
+
   try {
     const res = await fetch(
       `${process.env.NOCODB_API_URL}/api/v2/public/shared-view/${process.env.NOCODB_REQUESTS_FORM_PUBLIC_UUID}/rows`,
@@ -340,9 +364,19 @@ async function onSubmit() {
         body: JSON.stringify({ data: record }),
       },
     )
+    status = res.status
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
     formStore.submitted = true
+    if (match) {
+      track('request_submitted', {
+        ...matchProperties(match),
+        ticketCategory: data.ticketCategory ?? '',
+        withPersonalData: data.personalData !== null,
+        withTelegram: data.telegram.trim().length > 0,
+      })
+    }
   } catch (err) {
+    track('request_failed', { status })
     $q.notify({
       type: 'negative',
       message: 'Не удалось отправить заявку. Попробуйте ещё раз.',
@@ -353,9 +387,68 @@ async function onSubmit() {
   }
 }
 
+function openMatchInfo() {
+  track('match_info_opened')
+  showMatchInfo.value = true
+}
+
+function openFilters(source: 'link' | 'match_field') {
+  track('match_filters_opened', { source })
+  showFilters.value = true
+}
+
+function reloadMatches() {
+  track('matches_reload_requested')
+  matchesStore.fetchMatches()
+}
+
 function handleNewRequest() {
+  track('new_request_started')
   formStore.resetForm()
 }
+
+watch(
+  () => [
+    formStore.member,
+    formStore.phone,
+    formStore.telegram,
+    formStore.email,
+    formStore.selectedMatch,
+    formStore.ticketCategory,
+    formStore.personalData,
+  ],
+  () => track('form_started'),
+  { deep: true, once: true },
+)
+
+watch(
+  () => formStore.selectedMatch,
+  match => {
+    if (match) track('match_selected', matchProperties(match))
+  },
+)
+
+watch(
+  () => formStore.ticketCategory,
+  category => {
+    if (category) track('ticket_category_selected', { category })
+  },
+)
+
+// Checkboxes fire per click, so report the net result once the dialog closes.
+let teamsBeforeFilters = ''
+watch(showFilters, open => {
+  const teams = formStore.selectedTeams.join()
+  if (open) {
+    teamsBeforeFilters = teams
+    return
+  }
+  if (teams === teamsBeforeFilters) return
+  track('match_filters_changed', {
+    selectedTeams: formStore.selectedTeams.length,
+    totalTeams: TEAM_FILTERS.length,
+  })
+})
 
 onMounted(() => {
   matchesStore.fetchMatches()

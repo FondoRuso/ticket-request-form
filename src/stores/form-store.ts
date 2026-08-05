@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { emailRule, requiredRule } from 'src/utils/validation'
 import { computed, ref } from 'vue'
 import type { Member } from './members-store'
 
@@ -82,6 +83,8 @@ export const TEAM_FILTERS: TeamFilter[] = [
 
 const ALL_TEAM_KEYS = TEAM_FILTERS.map(teamFilterKey)
 
+const isBlank = (value: string) => requiredRule(value) !== true
+
 const DEFAULT_EXCLUDED_TEAMS = TEAM_FILTERS.filter(t => t.hiddenByDefault).map(
   teamFilterKey,
 )
@@ -129,6 +132,24 @@ export const useFormStore = defineStore(
       () => selectedMatch.value !== null && !selectedMatch.value.atHome,
     )
 
+    // Mirrors the form's validation rules, so a rejected submit can be reported
+    // as field names without touching the values themselves.
+    const missingRequiredFields = computed(() => {
+      const missing: string[] = []
+      if (member.value === null) missing.push('member')
+      if (isBlank(phone.value)) missing.push('phone')
+      if (emailRule(email.value) !== true) missing.push('email')
+      if (selectedMatch.value === null) missing.push('match')
+      if (isPersonalDataApplicable.value) {
+        const data = personalData.value
+        if (isBlank(data.firstName)) missing.push('firstName')
+        if (isBlank(data.lastName)) missing.push('lastName')
+        if (isBlank(data.birthDate)) missing.push('birthDate')
+        if (isBlank(data.documentNumber)) missing.push('documentNumber')
+      }
+      return missing
+    })
+
     function getSubmitData() {
       return {
         memberId: member.value?.id ?? null,
@@ -165,6 +186,7 @@ export const useFormStore = defineStore(
       submitted,
       isTicketCategoryApplicable,
       isPersonalDataApplicable,
+      missingRequiredFields,
       getSubmitData,
       resetForm,
     }

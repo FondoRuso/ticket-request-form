@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { track } from 'src/utils/analytics'
 import { getCetDate } from 'src/utils/date'
 
 export interface Member {
@@ -25,6 +26,7 @@ export const useMembersStore = defineStore('members', () => {
       lastFetchDate = getCetDate()
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Failed to load members'
+      track('members_load_failed', { reason: error.value })
     }
   }
 

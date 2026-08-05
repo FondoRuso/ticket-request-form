@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { track } from 'src/utils/analytics'
 import { getCetDate } from 'src/utils/date'
 import type { Match } from './form-store'
 
@@ -19,6 +20,7 @@ export const useMatchesStore = defineStore('matches', () => {
       lastFetchDate = getCetDate()
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Failed to load matches'
+      track('matches_load_failed', { reason: error.value })
     } finally {
       loading.value = false
     }
