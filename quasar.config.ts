@@ -52,6 +52,7 @@ export default defineConfig(() => {
     },
 
     framework: {
+      lang: 'ru',
       config: {
         dark: 'auto',
         ripple: false,
