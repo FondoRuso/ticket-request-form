@@ -1,8 +1,20 @@
+:root {
+  color-scheme: light dark;
+}
+
 body.body--dark {
   --q-primary: #9b7bc8;
 
   a {
     color: #bb9fdb;
+  }
+
+  .app-secondary-text {
+    color: #bdbdbd;
+  }
+
+  .app-negative-text {
+    color: #ff8a98;
   }
 }
 
@@ -53,4 +65,59 @@ body.body--dark {
       text-decoration: underline dotted;
     }
   }
+}
+
+.app-touch-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.app-link-button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: inherit;
+}
+
+.app-secondary-text {
+  color: #616161;
+}
+
+.app-negative-text {
+  color: #c10015;
+}
+
+@media (max-width: $breakpoint-xs-max),
+  (hover: none) and (pointer: coarse) {
+  .q-field {
+    font-size: 16px;
+  }
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--q-primary);
+  outline-offset: 3px;
+}
+
+.q-checkbox:focus-within .q-checkbox__inner {
+  border-radius: 4px;
+  outline: 3px solid var(--q-primary);
+  outline-offset: 2px;
+}
+
+.app-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

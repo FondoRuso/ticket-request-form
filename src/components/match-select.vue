@@ -2,13 +2,16 @@
   <q-select
     ref="select"
     :model-value="modelValue"
+    name="match"
     label="Матч"
     :options="matches"
     :loading="loading"
     :option-label="formatMatchLabel"
+    autocomplete="off"
     lazy-rules
     :rules="[requiredMatchRule]"
     @update:model-value="$emit('update:modelValue', $event)"
+    @blur="onBlur"
     @popup-show="onPopupShow"
   >
     <template #option="{ opt, itemProps }">
@@ -25,7 +28,7 @@
           <q-item-label
             v-if="!opt.isDateConfirmed"
             caption
-            class="text-negative"
+            class="app-negative-text"
           >
             Дата и время не подтверждены
           </q-item-label>
@@ -37,16 +40,24 @@
               label="Дома"
               class="q-ml-xs"
             />
-            <q-badge v-else color="grey" label="Выезд" class="q-ml-xs" />
+            <q-badge
+              v-else
+              color="grey"
+              text-color="dark"
+              label="Выезд"
+              class="q-ml-xs"
+            />
             <q-badge
               v-if="opt.isWomen"
               color="grey"
+              text-color="dark"
               label="Женщины"
               class="q-ml-xs"
             />
             <q-badge
               v-if="opt.isCantera"
               color="grey"
+              text-color="dark"
               label="Кантера"
               class="q-ml-xs"
             />
@@ -57,7 +68,7 @@
 
     <template #no-option>
       <q-item>
-        <q-item-section class="text-grey">
+        <q-item-section class="app-secondary-text">
           {{
             loading ? 'Загружаем матчи...' : 'Матчей по выбранным фильтрам нет'
           }}
@@ -72,7 +83,10 @@
         <template v-else>{{ opt.vs }} vs {{ opt.team }}</template>
         ·
         {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
-        <span v-if="!opt.isDateConfirmed" class="text-negative q-ml-xs">
+        <span
+          v-if="!opt.isDateConfirmed"
+          class="app-negative-text q-ml-xs"
+        >
           Дата и время не подтверждены
         </span>
       </span>
@@ -86,7 +100,7 @@ import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
 import { sportEmoji, type Match } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
-import { useTemplateRef } from 'vue'
+import { nextTick, useTemplateRef } from 'vue'
 
 const matchesStore = useMatchesStore()
 
@@ -103,15 +117,31 @@ const emit = defineEmits<{
 }>()
 
 const select = useTemplateRef<QSelect>('select')
+let openingFilters = false
 
 function onPopupShow() {
   if (props.noTeamsSelected) {
+    openingFilters = true
     select.value?.hidePopup()
     emit('openFilters')
     return
   }
   matchesStore.refreshMatches()
 }
+
+async function onBlur() {
+  if (!openingFilters) return
+
+  openingFilters = false
+  await nextTick()
+  select.value?.resetValidation()
+}
+
+function showPopup() {
+  select.value?.showPopup()
+}
+
+defineExpose({ showPopup })
 
 function formatMatchLabel(match: Match): string {
   const label = match.atHome

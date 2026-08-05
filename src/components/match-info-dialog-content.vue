@@ -1,23 +1,24 @@
 <template>
   <q-dialog
     :model-value="modelValue"
+    :aria-labelledby="dialogTitleId"
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <q-card>
       <q-card-section>
-        <div class="text-h6">О расписании матчей</div>
+        <h2 :id="dialogTitleId" class="text-h6 q-ma-none">
+          О расписании матчей
+        </h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none text-body1">
         <p>Время матчей указано по&nbsp;Мадриду.</p>
 
         <p>
-          Расписание обновляется ежедневно в&nbsp;{{ localTime }} по&nbsp;вашему
-          местному времени на&nbsp;основе данных
+          Расписание обновляется ежедневно около&nbsp;{{ localTime }}
+          по&nbsp;вашему местному времени на&nbsp;основе данных
           <a
             href="https://www.realmadrid.com/es-ES/calendario"
-            target="_blank"
-            rel="noopener"
             class="app-link app-link--underline"
             >официального сайта</a
           >.
@@ -59,6 +60,7 @@
 
 <script setup lang="ts">
 import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
+import { useId } from 'vue'
 
 defineProps<{
   modelValue: boolean
@@ -68,10 +70,20 @@ defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-const midnightCET = new Date()
-midnightCET.setUTCHours(23, 0, 0, 0) // 00:00 CET = 23:00 UTC
+const dialogTitleId = useId()
+const now = new Date()
+const madridHour = Number(
+  new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Madrid',
+    hour: 'numeric',
+    hourCycle: 'h23',
+  }).format(now),
+)
+const madridUtcOffsetHours = (madridHour - now.getUTCHours() + 24) % 24
+const updateTime = new Date(now)
+updateTime.setUTCHours(24 - madridUtcOffsetHours, 0, 0, 0)
 
-const localTime = midnightCET.toLocaleTimeString([], {
+const localTime = updateTime.toLocaleTimeString([], {
   hour: '2-digit',
   minute: '2-digit',
 })

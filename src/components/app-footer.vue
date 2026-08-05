@@ -1,11 +1,12 @@
 <template>
-  <div class="text-caption text-grey q-mt-xl q-mb-md full-width text-center">
-    Сделано с {{ heartEmoji }} для «Fondo Ruso»<br />
+  <div
+    class="app-secondary-text text-caption q-mt-xl q-mb-md full-width text-center"
+  >
+    <span aria-hidden="true">Сделано с {{ heartEmoji }} для «Fondo Ruso»</span>
+    <span class="app-sr-only">Сделано с любовью для «Fondo Ruso»</span><br />
     Есть проблемы? Пишите
     <a
       href="https://t.me/vovarevenko"
-      target="_blank"
-      rel="noopener"
       class="app-link"
       >@vovarevenko</a
     >
@@ -13,8 +14,6 @@
     <div class="q-mt-sm">
       <a
         href="https://github.com/FondoRuso/ticket-request-form"
-        target="_blank"
-        rel="noopener"
         class="app-link"
       >
         <q-icon :name="githubIcon" size="1.4em" />

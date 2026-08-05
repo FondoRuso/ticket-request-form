@@ -1,19 +1,25 @@
 <template>
   <div class="personal-data-block full-width q-mt-md q-pa-md">
-    <div class="text-subtitle1 q-mb-sm">Персональные данные</div>
-    <div class="text-body2 q-mb-xs text-grey-8">
+    <h2 class="text-subtitle1 q-mt-none q-mb-sm">Персональные данные</h2>
+    <div class="app-secondary-text text-body2 q-mb-xs">
       Данные из документа, который у вас будет с собой, когда вы пойдёте
       забирать свой билет. Каждый билет забирается индивидуально при
       предъявлении документа.
     </div>
-    <div class="text-body2 q-mb-md text-grey-8">
+    <div class="app-secondary-text text-body2 q-mb-md">
       Только для выездных матчей.
     </div>
 
     <div class="column q-gutter-sm">
       <q-input
         :model-value="modelValue.firstName"
+        name="firstName"
         label="Имя латиницей"
+        autocomplete="given-name"
+        autocapitalize="words"
+        enterkeyhint="next"
+        spellcheck="false"
+        autofocus
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -22,7 +28,12 @@
 
       <q-input
         :model-value="modelValue.lastName"
+        name="lastName"
         label="Фамилия латиницей"
+        autocomplete="family-name"
+        autocapitalize="words"
+        enterkeyhint="next"
+        spellcheck="false"
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -31,14 +42,26 @@
 
       <q-input
         :model-value="formattedBirthDate"
+        name="birthDate"
         label="Дата рождения"
+        input-class="cursor-pointer"
         lazy-rules
         :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
         readonly
+        @click="showBirthDatePicker = true"
+        @keyup.enter="showBirthDatePicker = true"
       >
         <template #append>
-          <q-icon name="event" class="cursor-pointer">
+          <q-btn
+            type="button"
+            icon="event"
+            aria-label="Выбрать дату рождения"
+            flat
+            round
+            dense
+          >
             <q-popup-proxy
+              v-model="showBirthDatePicker"
               cover
               transition-show="scale"
               transition-hide="scale"
@@ -55,13 +78,18 @@
                 </div>
               </q-date>
             </q-popup-proxy>
-          </q-icon>
+          </q-btn>
         </template>
       </q-input>
 
       <q-input
         :model-value="modelValue.documentNumber"
+        name="documentNumber"
         label="Номер документа"
+        autocomplete="off"
+        autocapitalize="characters"
+        enterkeyhint="done"
+        spellcheck="false"
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -75,7 +103,7 @@
 import { formatBirthDate } from 'src/utils/date'
 import { requiredRule } from 'src/utils/validation'
 import type { PersonalData } from 'stores/form-store'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   modelValue: PersonalData
@@ -92,6 +120,7 @@ function update(field: keyof PersonalData, value: string) {
 const formattedBirthDate = computed(() =>
   formatBirthDate(props.modelValue.birthDate),
 )
+const showBirthDatePicker = ref(false)
 </script>
 
 <style scoped lang="sass">

@@ -4,10 +4,15 @@
       <!-- SUCCESS STATE -->
       <template v-if="formStore.submitted">
         <div class="full-width column items-center q-mt-xl q-pt-xl">
-          <div class="text-h5 q-mb-lg">Спасибо за заявку</div>
+          <h1
+            ref="successHeading"
+            tabindex="-1"
+            class="text-h5 q-mt-none q-mb-lg"
+          >
+            Спасибо за заявку
+          </h1>
           <a
             :href="requestsViewUrl"
-            target="_blank"
             class="app-link app-link--underline q-mb-lg"
             @click="track('request_status_opened')"
           >
@@ -40,6 +45,7 @@
         >
           <q-select
             v-model="formStore.member"
+            name="member"
             label="Выберите себя из списка"
             :options="memberOptions"
             option-label="name"
@@ -48,13 +54,14 @@
             input-debounce="300"
             fill-input
             hide-selected
+            autocomplete="off"
             lazy-rules
             :rules="[requiredRule]"
             @filter="filterMembers"
           >
             <template #no-option>
               <q-item>
-                <q-item-section class="text-grey">
+                <q-item-section class="app-secondary-text">
                   Нет результатов
                 </q-item-section>
               </q-item>
@@ -63,7 +70,12 @@
 
           <q-input
             v-model="formStore.phone"
+            name="phone"
             label="Номер телефона для связи"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            enterkeyhint="next"
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -71,7 +83,12 @@
 
           <q-input
             v-model="formStore.telegram"
+            name="telegram"
             label="Ник в Telegram"
+            autocomplete="off"
+            autocapitalize="none"
+            enterkeyhint="next"
+            spellcheck="false"
             debounce="500"
             lazy-rules
             class="q-mb-md"
@@ -79,8 +96,14 @@
 
           <q-input
             v-model="formStore.email"
+            name="email"
             label="Электропочта"
             type="email"
+            inputmode="email"
+            autocomplete="email"
+            autocapitalize="none"
+            enterkeyhint="next"
+            spellcheck="false"
             hint="Внимательно проверяй почту, туда будут приходить оповещения по статусу заявки"
             debounce="500"
             lazy-rules
@@ -88,23 +111,35 @@
           />
 
           <div class="row items-center q-mt-lg">
-            <a class="app-link app-link--dotted" @click="openMatchInfo">
+            <button
+              type="button"
+              class="app-link app-link--dotted app-link-button app-touch-target"
+              @click="openMatchInfo"
+            >
               Как это работает?
-            </a>
+            </button>
 
             <q-space />
 
-            <span
-              class="row items-center cursor-pointer"
+            <button
+              type="button"
+              class="app-link-button app-touch-target row items-center cursor-pointer"
               @click="openFilters('link')"
             >
-              <a class="app-link app-link--dotted">Фильтры</a>
-              <span class="q-ml-xs text-grey">
+              <span class="app-link app-link--dotted">Фильтры</span>
+              <span class="app-secondary-text q-ml-xs">
                 ·
                 {{ formStore.selectedTeams.length }}/{{ TEAM_FILTERS.length }}
               </span>
-            </span>
+            </button>
           </div>
+
+          <div
+            class="app-sr-only"
+            aria-live="polite"
+            aria-atomic="true"
+            v-text="matchesStore.loading ? 'Загружаем список матчей…' : ''"
+          />
 
           <q-banner
             v-if="matchesStore.error"
@@ -118,6 +153,7 @@
           </q-banner>
 
           <MatchSelect
+            ref="matchSelect"
             v-model="formStore.selectedMatch"
             :matches="filteredMatches"
             :loading="matchesStore.loading"
@@ -128,6 +164,7 @@
           <q-select
             v-if="formStore.isTicketCategoryApplicable"
             v-model="formStore.ticketCategory"
+            name="ticketCategory"
             label="Категория билета"
             :options="TICKET_CATEGORIES"
             emit-value
@@ -162,6 +199,7 @@
         <MatchFiltersDialog
           v-model="showFilters"
           v-model:selected-teams="formStore.selectedTeams"
+          @closed="onFiltersClosed"
         />
 
         <DeadlineWarningDialog
@@ -201,7 +239,9 @@ import {
 } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
+
+type FiltersSource = 'link' | 'match_field'
 
 const $q = useQuasar()
 const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
@@ -226,6 +266,10 @@ const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const successHeading = useTemplateRef<HTMLHeadingElement>('successHeading')
+const matchSelect = useTemplateRef<InstanceType<typeof MatchSelect>>(
+  'matchSelect',
+)
 const isSubmitting = ref(false)
 const showMatchInfo = ref(false)
 const showFilters = ref(false)
@@ -233,6 +277,7 @@ const showDeadlineWarning = ref(false)
 const deadlineDaysLeft = ref(0)
 const memberOptions = ref<Member[]>([])
 let deadlineResolve: ((confirmed: boolean) => void) | null = null
+let filtersSource: FiltersSource | null = null
 
 async function filterMembers(val: string, update: (fn: () => void) => void) {
   await membersStore.fetchMembers()
@@ -375,6 +420,8 @@ async function onSubmit() {
         withTelegram: data.telegram.trim().length > 0,
       })
     }
+    await nextTick()
+    successHeading.value?.focus()
   } catch (err) {
     track('request_failed', { status })
     $q.notify({
@@ -392,9 +439,21 @@ function openMatchInfo() {
   showMatchInfo.value = true
 }
 
-function openFilters(source: 'link' | 'match_field') {
+function openFilters(source: FiltersSource) {
+  filtersSource = source
   track('match_filters_opened', { source })
   showFilters.value = true
+}
+
+function onFiltersClosed(completed: boolean) {
+  const shouldOpenMatch =
+    completed &&
+    filtersSource === 'match_field' &&
+    formStore.selectedTeams.length > 0
+
+  filtersSource = null
+
+  if (shouldOpenMatch) matchSelect.value?.showPopup()
 }
 
 function reloadMatches() {

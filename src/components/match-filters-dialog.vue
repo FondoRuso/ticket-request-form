@@ -1,8 +1,14 @@
 <template>
-  <q-dialog v-model="open">
+  <q-dialog
+    v-model="open"
+    :aria-labelledby="`${uid}-title`"
+    @hide="onHide"
+  >
     <q-card>
       <q-card-section>
-        <div class="text-h6">Какие матчи показывать</div>
+        <h2 :id="`${uid}-title`" class="text-h6 q-ma-none">
+          Какие матчи показывать
+        </h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none column items-start">
@@ -17,7 +23,7 @@
         >
           <div
             :id="`${uid}-${group.slug}`"
-            class="text-subtitle2 text-grey q-mt-md q-mb-xs"
+            class="app-secondary-text text-subtitle2 q-mt-md q-mb-xs"
           >
             {{ group.title }}
           </div>
@@ -35,12 +41,12 @@
 
       <q-card-actions align="center" class="q-pa-md">
         <q-btn
-          v-close-popup
           label="Готово"
           flat
           no-caps
           class="full-width"
           size="lg"
+          @click="complete"
         />
       </q-card-actions>
     </q-card>
@@ -84,10 +90,15 @@ const ALL_TEAM_KEYS = TEAM_FILTERS.map(teamFilterKey)
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
-const uid = useId()
-
 const open = defineModel<boolean>({ required: true })
 const selectedTeams = defineModel<string[]>('selectedTeams', { required: true })
+
+const emit = defineEmits<{
+  closed: [completed: boolean]
+}>()
+
+const uid = useId()
+let completed = false
 
 const allTeams = computed({
   get: () => ALL_TEAM_KEYS.every(key => selectedTeams.value.includes(key)),
@@ -95,4 +106,14 @@ const allTeams = computed({
     selectedTeams.value = value ? [...ALL_TEAM_KEYS] : []
   },
 })
+
+function complete() {
+  completed = true
+  open.value = false
+}
+
+function onHide() {
+  emit('closed', completed)
+  completed = false
+}
 </script>
