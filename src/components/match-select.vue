@@ -19,7 +19,7 @@
           >
           <q-item-label v-else>{{ opt.vs }} vs {{ opt.team }}</q-item-label>
           <q-item-label caption>
-            {{ sportEmoji(opt.sport) }} {{ opt.tournament }} &middot;
+            {{ sportEmoji(opt.sport) }} {{ opt.tournament }} ·
             {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
           </q-item-label>
           <q-item-label
@@ -72,7 +72,7 @@
         {{ sportEmoji(opt.sport) }}
         <template v-if="opt.atHome">{{ opt.team }} vs {{ opt.vs }}</template>
         <template v-else>{{ opt.vs }} vs {{ opt.team }}</template>
-        &middot;
+        ·
         {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
         <span v-if="!opt.isDateConfirmed" class="text-negative q-ml-xs">
           Дата и время не подтверждены

@@ -20,7 +20,7 @@
         <q-icon :name="githubIcon" size="1.4em" />
         GitHub
       </a>
-      • версия {{ version }}
+      · версия {{ version }}
     </div>
   </div>
 </template>
