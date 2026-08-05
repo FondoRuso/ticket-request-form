@@ -88,14 +88,17 @@
           />
 
           <div class="row items-center q-mt-lg">
-            <a class="app-link app-link--dotted" @click="openMatchInfo">
+            <a
+              class="app-link app-link--dotted app-touch-target"
+              @click="openMatchInfo"
+            >
               Как это работает?
             </a>
 
             <q-space />
 
             <span
-              class="row items-center cursor-pointer"
+              class="app-touch-target row items-center cursor-pointer"
               @click="openFilters('link')"
             >
               <a class="app-link app-link--dotted">Фильтры</a>
