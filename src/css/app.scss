@@ -81,6 +81,13 @@ body.body--dark {
   color: #c10015;
 }
 
+@media (max-width: $breakpoint-xs-max),
+  (hover: none) and (pointer: coarse) {
+  .q-field {
+    font-size: 16px;
+  }
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 3px solid var(--q-primary);
