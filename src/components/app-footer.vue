@@ -7,8 +7,6 @@
     Есть проблемы? Пишите
     <a
       href="https://t.me/vovarevenko"
-      target="_blank"
-      rel="noopener"
       class="app-link"
       >@vovarevenko</a
     >
@@ -16,8 +14,6 @@
     <div class="q-mt-sm">
       <a
         href="https://github.com/FondoRuso/ticket-request-form"
-        target="_blank"
-        rel="noopener"
         class="app-link"
       >
         <q-icon :name="githubIcon" size="1.4em" />

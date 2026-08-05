@@ -13,7 +13,6 @@
           </h1>
           <a
             :href="requestsViewUrl"
-            target="_blank"
             class="app-link app-link--underline q-mb-lg"
             @click="track('request_status_opened')"
           >

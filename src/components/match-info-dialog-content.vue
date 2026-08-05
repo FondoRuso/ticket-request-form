@@ -19,8 +19,6 @@
           по&nbsp;вашему местному времени на&nbsp;основе данных
           <a
             href="https://www.realmadrid.com/es-ES/calendario"
-            target="_blank"
-            rel="noopener"
             class="app-link app-link--underline"
             >официального сайта</a
           >.

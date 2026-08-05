@@ -7,8 +7,6 @@
       <h1 class="app-header__title text-h4 q-ma-none">Заявка на билет</h1>
       <a
         href="https://fondoruso.ru"
-        target="_blank"
-        rel="noopener"
         class="text-subtitle1 site-link"
         >FondoRuso<span class="site-link__tld">.ru</span></a
       >
