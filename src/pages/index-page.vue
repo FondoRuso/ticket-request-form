@@ -70,6 +70,7 @@
             type="tel"
             inputmode="tel"
             autocomplete="tel"
+            enterkeyhint="next"
             debounce="500"
             lazy-rules
             :rules="[requiredRule]"
@@ -81,6 +82,7 @@
             label="Ник в Telegram"
             autocomplete="off"
             autocapitalize="none"
+            enterkeyhint="next"
             spellcheck="false"
             debounce="500"
             lazy-rules
@@ -95,6 +97,7 @@
             inputmode="email"
             autocomplete="email"
             autocapitalize="none"
+            enterkeyhint="next"
             spellcheck="false"
             hint="Внимательно проверяй почту, туда будут приходить оповещения по статусу заявки"
             debounce="500"

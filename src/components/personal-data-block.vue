@@ -17,6 +17,7 @@
         label="Имя латиницей"
         autocomplete="given-name"
         autocapitalize="words"
+        enterkeyhint="next"
         spellcheck="false"
         debounce="500"
         lazy-rules
@@ -30,6 +31,7 @@
         label="Фамилия латиницей"
         autocomplete="family-name"
         autocapitalize="words"
+        enterkeyhint="next"
         spellcheck="false"
         debounce="500"
         lazy-rules
@@ -78,6 +80,7 @@
         label="Номер документа"
         autocomplete="off"
         autocapitalize="characters"
+        enterkeyhint="done"
         spellcheck="false"
         debounce="500"
         lazy-rules
