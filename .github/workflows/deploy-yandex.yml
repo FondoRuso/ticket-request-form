@@ -41,6 +41,8 @@ jobs:
           NOCODB_REQUESTS_FORM_PUBLIC_UUID: ${{ secrets.NOCODB_REQUESTS_FORM_PUBLIC_UUID }}
           NOCODB_REQUESTS_VIEW_URL: ${{ secrets.NOCODB_REQUESTS_VIEW_URL }}
           DATA_BASE_URL: ${{ secrets.DATA_BASE_URL }}
+          OPENPANEL_API_URL: ${{ secrets.OPENPANEL_API_URL }}
+          OPENPANEL_CLIENT_ID: ${{ secrets.OPENPANEL_CLIENT_ID }}
         run: npm run build
 
       - name: Configure AWS CLI for Yandex Object Storage
