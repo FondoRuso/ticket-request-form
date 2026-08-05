@@ -11,6 +11,7 @@
     "format": "prettier --write \"src/**/*.{ts,vue,scss,sass,css,json}\" \"*.{json,js,ts}\""
   },
   "dependencies": {
+    "@openpanel/web": "^1.4.1",
     "@quasar/extras": "^1.18.0",
     "pinia": "^2.3.1",
     "pinia-plugin-persistedstate": "^3.2.3",
