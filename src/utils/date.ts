@@ -3,6 +3,12 @@ const LOCALE = 'ru-RU'
 export const DEADLINE_DAYS_HOME = 20
 export const DEADLINE_DAYS_AWAY = 25
 
+const MS_PER_DAY = 1000 * 60 * 60 * 24
+
+export function daysUntilMatch(dateStr: string): number {
+  return Math.floor((new Date(dateStr).getTime() - Date.now()) / MS_PER_DAY)
+}
+
 export function getCetDate(): string {
   const now = new Date()
   const parts = new Intl.DateTimeFormat('en', {

@@ -9,6 +9,8 @@ const shellEnv = Object.fromEntries(
     'NOCODB_REQUESTS_FORM_PUBLIC_UUID',
     'NOCODB_REQUESTS_VIEW_URL',
     'DATA_BASE_URL',
+    'OPENPANEL_API_URL',
+    'OPENPANEL_CLIENT_ID',
   ]
     .filter(key => process.env[key] !== undefined)
     .map(key => [key, process.env[key]]),
@@ -20,7 +22,7 @@ export default defineConfig(() => {
       rootComponent: 'src/app.vue',
     },
 
-    boot: ['defaults'],
+    boot: ['defaults', 'analytics'],
 
     css: ['app.scss'],
 
@@ -35,6 +37,14 @@ export default defineConfig(() => {
         APP_VERSION: version,
         ...shellEnv,
       },
+      // Analytics is optional. Undeclared keys are left as literal
+      // `process.env.X` in the bundle and throw in the browser, so give them a
+      // value that `.env` and the shell can still override.
+      envFilter: env => ({
+        OPENPANEL_API_URL: '',
+        OPENPANEL_CLIENT_ID: '',
+        ...env,
+      }),
     },
 
     devServer: {

@@ -54,6 +54,12 @@ async function prerender() {
   })
   const page = await browser.newPage()
 
+  // Keep the build itself out of the analytics data. Not serialized by
+  // page.content(), so it cannot leak into the shipped index.html.
+  await page.evaluateOnNewDocument(() => {
+    window.__PRERENDER__ = true
+  })
+
   await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' })
 
   // Remove any scripts that re-fetch data or cause hydration flicker
