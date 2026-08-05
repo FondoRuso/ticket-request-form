@@ -73,6 +73,15 @@ body.body--dark {
   min-height: 44px;
 }
 
+.app-link-button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: inherit;
+}
+
 .app-secondary-text {
   color: #616161;
 }

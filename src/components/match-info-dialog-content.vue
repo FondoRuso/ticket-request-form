@@ -1,11 +1,14 @@
 <template>
   <q-dialog
     :model-value="modelValue"
+    :aria-labelledby="dialogTitleId"
     @update:model-value="$emit('update:modelValue', $event)"
   >
     <q-card>
       <q-card-section>
-        <div class="text-h6">О расписании матчей</div>
+        <h2 :id="dialogTitleId" class="text-h6 q-ma-none">
+          О расписании матчей
+        </h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none text-body1">
@@ -59,6 +62,7 @@
 
 <script setup lang="ts">
 import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
+import { useId } from 'vue'
 
 defineProps<{
   modelValue: boolean
@@ -68,6 +72,7 @@ defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
+const dialogTitleId = useId()
 const midnightCET = new Date()
 midnightCET.setUTCHours(23, 0, 0, 0) // 00:00 CET = 23:00 UTC
 

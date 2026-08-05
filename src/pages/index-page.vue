@@ -106,25 +106,27 @@
           />
 
           <div class="row items-center q-mt-lg">
-            <a
-              class="app-link app-link--dotted app-touch-target"
+            <button
+              type="button"
+              class="app-link app-link--dotted app-link-button app-touch-target"
               @click="openMatchInfo"
             >
               Как это работает?
-            </a>
+            </button>
 
             <q-space />
 
-            <span
-              class="app-touch-target row items-center cursor-pointer"
+            <button
+              type="button"
+              class="app-link-button app-touch-target row items-center cursor-pointer"
               @click="openFilters('link')"
             >
-              <a class="app-link app-link--dotted">Фильтры</a>
+              <span class="app-link app-link--dotted">Фильтры</span>
               <span class="app-secondary-text q-ml-xs">
                 ·
                 {{ formStore.selectedTeams.length }}/{{ TEAM_FILTERS.length }}
               </span>
-            </span>
+            </button>
           </div>
 
           <q-banner

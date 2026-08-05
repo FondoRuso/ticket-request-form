@@ -1,8 +1,10 @@
 <template>
-  <q-dialog v-model="open">
+  <q-dialog v-model="open" :aria-labelledby="`${uid}-title`">
     <q-card>
       <q-card-section>
-        <div class="text-h6">Какие матчи показывать</div>
+        <h2 :id="`${uid}-title`" class="text-h6 q-ma-none">
+          Какие матчи показывать
+        </h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none column items-start">
@@ -84,11 +86,10 @@ const ALL_TEAM_KEYS = TEAM_FILTERS.map(teamFilterKey)
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
-const uid = useId()
-
 const open = defineModel<boolean>({ required: true })
 const selectedTeams = defineModel<string[]>('selectedTeams', { required: true })
 
+const uid = useId()
 const allTeams = computed({
   get: () => ALL_TEAM_KEYS.every(key => selectedTeams.value.includes(key)),
   set: value => {

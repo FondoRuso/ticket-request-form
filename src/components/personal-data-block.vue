@@ -1,6 +1,6 @@
 <template>
   <div class="personal-data-block full-width q-mt-md q-pa-md">
-    <div class="text-subtitle1 q-mb-sm">Персональные данные</div>
+    <h2 class="text-subtitle1 q-mt-none q-mb-sm">Персональные данные</h2>
     <div class="app-secondary-text text-body2 q-mb-xs">
       Данные из документа, который у вас будет с собой, когда вы пойдёте
       забирать свой билет. Каждый билет забирается индивидуально при
@@ -52,7 +52,14 @@
         @keyup.enter="showBirthDatePicker = true"
       >
         <template #append>
-          <q-icon name="event" class="cursor-pointer">
+          <q-btn
+            type="button"
+            icon="event"
+            aria-label="Выбрать дату рождения"
+            flat
+            round
+            dense
+          >
             <q-popup-proxy
               v-model="showBirthDatePicker"
               cover
@@ -71,7 +78,7 @@
                 </div>
               </q-date>
             </q-popup-proxy>
-          </q-icon>
+          </q-btn>
         </template>
       </q-input>
 

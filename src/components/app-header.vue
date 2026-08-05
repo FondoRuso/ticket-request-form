@@ -4,7 +4,7 @@
       <img src="/logo.svg" alt="Фондо Русо" class="logo-img" />
     </div>
     <div class="app-header__copy">
-      <div class="app-header__title text-h4">Заявка на билет</div>
+      <h1 class="app-header__title text-h4 q-ma-none">Заявка на билет</h1>
       <a
         href="https://fondoruso.ru"
         target="_blank"
