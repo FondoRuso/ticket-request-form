@@ -1,6 +1,7 @@
 <template>
   <div class="text-caption text-grey q-mt-xl q-mb-md full-width text-center">
-    Сделано с {{ heartEmoji }} для «Fondo Ruso»<br />
+    <span aria-hidden="true">Сделано с {{ heartEmoji }} для «Fondo Ruso»</span>
+    <span class="app-sr-only">Сделано с любовью для «Fondo Ruso»</span><br />
     Есть проблемы? Пишите
     <a
       href="https://t.me/vovarevenko"
