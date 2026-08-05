@@ -30,7 +30,7 @@
             Дата и время не подтверждены
           </q-item-label>
           <q-item-label caption>
-            {{ opt.stadium }}
+            {{ opt.stadium ?? 'Площадка не объявлена' }}
             <q-badge
               v-if="opt.atHome"
               color="positive"
