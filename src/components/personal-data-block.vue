@@ -19,6 +19,7 @@
         autocapitalize="words"
         enterkeyhint="next"
         spellcheck="false"
+        autofocus
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
