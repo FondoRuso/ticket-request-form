@@ -12,6 +12,7 @@ A web application for [Fondo Ruso](https://fondoruso.ru) fan club members to req
 - **Prerendered HTML** for fast initial load
 - **Dark mode** with auto-detection
 - **All times in Madrid timezone** (Europe/Madrid)
+- **Privacy-preserving analytics** via a self-hosted OpenPanel instance
 
 ## Tech Stack
 
@@ -34,8 +35,24 @@ These variables are **baked into the JS bundle at build time**.
 | `NOCODB_REQUESTS_FORM_PUBLIC_UUID` | Public UUID of the ticket request form |
 | `NOCODB_REQUESTS_VIEW_URL` | URL to view submitted requests |
 | `DATA_BASE_URL` | Base URL for `matches.json` and `members.json` (e.g. `https://example.workers.dev`) |
+| `OPENPANEL_API_URL` | OpenPanel **API** origin |
+| `OPENPANEL_CLIENT_ID` | OpenPanel client ID. Leave empty to disable analytics |
 
 `matches.json` and `members.json` are fetched from `DATA_BASE_URL` at runtime and are maintained by a separate data service.
+
+## Analytics
+
+Usage is tracked with [OpenPanel](https://openpanel.dev) on a self-hosted instance. The event catalogue lives in [`src/utils/analytics.ts`](src/utils/analytics.ts) as a typed map — adding an event means adding it there first.
+
+**No personal data is ever sent.** Events carry only choices and outcomes: which match was picked, whether the deadline warning appeared, which required fields were left empty (names only, never values). Names, phone numbers, emails, birth dates and document numbers stay between the browser and NocoDB.
+
+The guarantees that keep it that way:
+
+- **No `identify()`** — visitors stay anonymous. OpenPanel's device id is a server-side hash that rotates daily, so cross-day retention charts are not meaningful here. Everything worth measuring is within a session.
+- **No session replay** — it records the DOM, and this form has passport numbers in it.
+- **Manual screen views** — automatic ones report `window.location.href`, and OpenPanel explodes every query parameter into a stored property. The router sends `to.path` instead.
+- **No client secret in the bundle** — the browser authenticates with the client id plus an origin allowlist. A secret shipped to the browser is world-readable, and OpenPanel also treats its presence as proof of server-side traffic and switches off bot filtering.
+- **Nothing during prerender** — `prerender.js` sets `window.__PRERENDER__`, and the SDK is not constructed when it is set (with `navigator.webdriver` as a fallback).
 
 ## Production Deployment
 
@@ -43,7 +60,7 @@ The production site is hosted on Yandex Object Storage (static website hosting).
 
 ### Required GitHub Secrets
 
-Add the four [environment variables](#environment-variables) above as GitHub Secrets with identical names, plus Yandex Cloud credentials — an S3-compatible static key of a service account with the `storage.editor` role on the bucket:
+Add the [environment variables](#environment-variables) above as GitHub Secrets with identical names, plus Yandex Cloud credentials — an S3-compatible static key of a service account with the `storage.editor` role on the bucket:
 
 | Secret | Description |
 | --- | --- |
