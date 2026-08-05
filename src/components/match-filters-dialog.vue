@@ -1,5 +1,9 @@
 <template>
-  <q-dialog v-model="open" :aria-labelledby="`${uid}-title`">
+  <q-dialog
+    v-model="open"
+    :aria-labelledby="`${uid}-title`"
+    @hide="onHide"
+  >
     <q-card>
       <q-card-section>
         <h2 :id="`${uid}-title`" class="text-h6 q-ma-none">
@@ -37,12 +41,12 @@
 
       <q-card-actions align="center" class="q-pa-md">
         <q-btn
-          v-close-popup
           label="Готово"
           flat
           no-caps
           class="full-width"
           size="lg"
+          @click="complete"
         />
       </q-card-actions>
     </q-card>
@@ -89,11 +93,27 @@ import { computed, useId } from 'vue'
 const open = defineModel<boolean>({ required: true })
 const selectedTeams = defineModel<string[]>('selectedTeams', { required: true })
 
+const emit = defineEmits<{
+  closed: [completed: boolean]
+}>()
+
 const uid = useId()
+let completed = false
+
 const allTeams = computed({
   get: () => ALL_TEAM_KEYS.every(key => selectedTeams.value.includes(key)),
   set: value => {
     selectedTeams.value = value ? [...ALL_TEAM_KEYS] : []
   },
 })
+
+function complete() {
+  completed = true
+  open.value = false
+}
+
+function onHide() {
+  emit('closed', completed)
+  completed = false
+}
 </script>

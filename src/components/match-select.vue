@@ -11,6 +11,7 @@
     lazy-rules
     :rules="[requiredMatchRule]"
     @update:model-value="$emit('update:modelValue', $event)"
+    @blur="onBlur"
     @popup-show="onPopupShow"
   >
     <template #option="{ opt, itemProps }">
@@ -99,7 +100,7 @@ import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
 import { sportEmoji, type Match } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
-import { useTemplateRef } from 'vue'
+import { nextTick, useTemplateRef } from 'vue'
 
 const matchesStore = useMatchesStore()
 
@@ -116,15 +117,31 @@ const emit = defineEmits<{
 }>()
 
 const select = useTemplateRef<QSelect>('select')
+let openingFilters = false
 
 function onPopupShow() {
   if (props.noTeamsSelected) {
+    openingFilters = true
     select.value?.hidePopup()
     emit('openFilters')
     return
   }
   matchesStore.refreshMatches()
 }
+
+async function onBlur() {
+  if (!openingFilters) return
+
+  openingFilters = false
+  await nextTick()
+  select.value?.resetValidation()
+}
+
+function showPopup() {
+  select.value?.showPopup()
+}
+
+defineExpose({ showPopup })
 
 function formatMatchLabel(match: Match): string {
   const label = match.atHome

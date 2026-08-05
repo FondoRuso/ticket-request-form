@@ -141,6 +141,7 @@
           </q-banner>
 
           <MatchSelect
+            ref="matchSelect"
             v-model="formStore.selectedMatch"
             :matches="filteredMatches"
             :loading="matchesStore.loading"
@@ -186,6 +187,7 @@
         <MatchFiltersDialog
           v-model="showFilters"
           v-model:selected-teams="formStore.selectedTeams"
+          @closed="onFiltersClosed"
         />
 
         <DeadlineWarningDialog
@@ -225,7 +227,9 @@ import {
 } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
+
+type FiltersSource = 'link' | 'match_field'
 
 const $q = useQuasar()
 const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
@@ -250,6 +254,9 @@ const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const matchSelect = useTemplateRef<InstanceType<typeof MatchSelect>>(
+  'matchSelect',
+)
 const isSubmitting = ref(false)
 const showMatchInfo = ref(false)
 const showFilters = ref(false)
@@ -257,6 +264,7 @@ const showDeadlineWarning = ref(false)
 const deadlineDaysLeft = ref(0)
 const memberOptions = ref<Member[]>([])
 let deadlineResolve: ((confirmed: boolean) => void) | null = null
+let filtersSource: FiltersSource | null = null
 
 async function filterMembers(val: string, update: (fn: () => void) => void) {
   await membersStore.fetchMembers()
@@ -416,9 +424,21 @@ function openMatchInfo() {
   showMatchInfo.value = true
 }
 
-function openFilters(source: 'link' | 'match_field') {
+function openFilters(source: FiltersSource) {
+  filtersSource = source
   track('match_filters_opened', { source })
   showFilters.value = true
+}
+
+function onFiltersClosed(completed: boolean) {
+  const shouldOpenMatch =
+    completed &&
+    filtersSource === 'match_field' &&
+    formStore.selectedTeams.length > 0
+
+  filtersSource = null
+
+  if (shouldOpenMatch) matchSelect.value?.showPopup()
 }
 
 function reloadMatches() {
