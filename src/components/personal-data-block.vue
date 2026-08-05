@@ -13,7 +13,11 @@
     <div class="column q-gutter-sm">
       <q-input
         :model-value="modelValue.firstName"
+        name="firstName"
         label="Имя латиницей"
+        autocomplete="given-name"
+        autocapitalize="words"
+        spellcheck="false"
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -22,7 +26,11 @@
 
       <q-input
         :model-value="modelValue.lastName"
+        name="lastName"
         label="Фамилия латиницей"
+        autocomplete="family-name"
+        autocapitalize="words"
+        spellcheck="false"
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
@@ -31,6 +39,7 @@
 
       <q-input
         :model-value="formattedBirthDate"
+        name="birthDate"
         label="Дата рождения"
         lazy-rules
         :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
@@ -61,7 +70,11 @@
 
       <q-input
         :model-value="modelValue.documentNumber"
+        name="documentNumber"
         label="Номер документа"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"

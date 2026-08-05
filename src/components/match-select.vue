@@ -2,10 +2,12 @@
   <q-select
     ref="select"
     :model-value="modelValue"
+    name="match"
     label="Матч"
     :options="matches"
     :loading="loading"
     :option-label="formatMatchLabel"
+    autocomplete="off"
     lazy-rules
     :rules="[requiredMatchRule]"
     @update:model-value="$emit('update:modelValue', $event)"
