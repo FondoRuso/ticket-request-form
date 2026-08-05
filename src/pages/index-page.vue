@@ -92,15 +92,16 @@
 
             <q-space />
 
-            <div class="row q-gutter-x-md">
-              <q-checkbox v-model="formStore.showAway" label="Гостевые" dense />
-              <q-checkbox v-model="formStore.showWomen" label="Женские" dense />
-              <q-checkbox
-                v-model="formStore.showCantera"
-                label="Кантера"
-                dense
-              />
-            </div>
+            <span
+              class="row items-center cursor-pointer"
+              @click="showFilters = true"
+            >
+              <a class="app-link app-link--dotted">Фильтры</a>
+              <span class="q-ml-xs text-grey">
+                ·
+                {{ formStore.selectedTeams.length }}/{{ TEAM_FILTERS.length }}
+              </span>
+            </span>
           </div>
 
           <q-banner
@@ -122,6 +123,8 @@
             v-model="formStore.selectedMatch"
             :matches="filteredMatches"
             :loading="matchesStore.loading"
+            :no-teams-selected="formStore.selectedTeams.length === 0"
+            @open-filters="showFilters = true"
           />
 
           <q-select
@@ -158,6 +161,11 @@
 
         <MatchInfoDialogContent v-model="showMatchInfo" />
 
+        <MatchFiltersDialog
+          v-model="showFilters"
+          v-model:selected-teams="formStore.selectedTeams"
+        />
+
         <DeadlineWarningDialog
           v-model="showDeadlineWarning"
           :match="formStore.selectedMatch"
@@ -174,6 +182,7 @@
 import AppFooter from 'components/app-footer.vue'
 import AppHeader from 'components/app-header.vue'
 import DeadlineWarningDialog from 'components/deadline-warning-dialog.vue'
+import MatchFiltersDialog from 'components/match-filters-dialog.vue'
 import MatchInfoDialogContent from 'components/match-info-dialog-content.vue'
 import MatchSelect from 'components/match-select.vue'
 import PersonalDataBlock from 'components/personal-data-block.vue'
@@ -181,7 +190,12 @@ import type { QForm } from 'quasar'
 import { useQuasar } from 'quasar'
 import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
 import { emailRule, requiredRule } from 'src/utils/validation'
-import { TICKET_CATEGORIES, useFormStore } from 'stores/form-store'
+import {
+  matchTeamKey,
+  TEAM_FILTERS,
+  TICKET_CATEGORIES,
+  useFormStore,
+} from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
 import { computed, onMounted, ref } from 'vue'
@@ -211,6 +225,7 @@ const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
 const isSubmitting = ref(false)
 const showMatchInfo = ref(false)
+const showFilters = ref(false)
 const showDeadlineWarning = ref(false)
 const deadlineDaysLeft = ref(0)
 const memberOptions = ref<Member[]>([])
@@ -227,17 +242,15 @@ async function filterMembers(val: string, update: (fn: () => void) => void) {
 }
 
 const filteredMatches = computed(() =>
-  matchesStore.matches.filter(m => {
-    if (!formStore.showAway && !m.atHome) return false
-    if (!formStore.showWomen && m.isWomen) return false
-    if (!formStore.showCantera && m.isCantera) return false
-    return true
-  }),
+  matchesStore.matches.filter(
+    m =>
+      m.canRequestTickets && !formStore.excludedTeams.includes(matchTeamKey(m)),
+  ),
 )
 
 const isFirstTeam = computed(() => {
   const m = formStore.selectedMatch
-  return m !== null && !m.isWomen && !m.isCantera
+  return m !== null && m.sport === 'football' && !m.isWomen && !m.isCantera
 })
 
 const showTicketCategory = computed(
@@ -292,9 +305,22 @@ async function onSubmit() {
   const data = formStore.getSubmitData()
   const match = data.match
 
+  let sport = data.match?.sport ?? ''
+  if (data.match?.sport) {
+    switch (data.match.sport) {
+      case 'football':
+        sport = 'Футбол'
+        break
+      case 'basketball':
+        sport = 'Баскетбол'
+        break
+    }
+  }
+
   const record = {
     Имя: data.memberName,
     'Дата матча': match?.date ? formatDateForApi(match.date) : null,
+    Спорт: sport,
     Команда: match?.team ?? '',
     Соперник: match?.vs ?? '',
     'Где?': match?.atHome ? 'Дома' : 'Выезд',

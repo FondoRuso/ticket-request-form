@@ -1,16 +1,27 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Member } from './members-store'
+
+export type Sport = 'football' | 'basketball'
+
+const SPORT_EMOJI: Record<Sport, string> = {
+  football: '⚽',
+  basketball: '🏀',
+}
+
+export const sportEmoji = (sport: Sport) => SPORT_EMOJI[sport]
 
 export interface Match {
   type: string
+  sport: Sport
   team: string
   vs: string
   tournament: string
-  stadium: string
+  stadium: string | null
   atHome: boolean
   isWomen: boolean
   isCantera: boolean
+  canRequestTickets: boolean
   date: string
   isDateConfirmed: boolean
 }
@@ -28,6 +39,53 @@ export const TICKET_CATEGORIES = [
   'Третий или четвёртый ярус за воротами',
 ]
 
+export interface TeamFilter {
+  sport: Sport
+  isWomen: boolean
+  team: string
+  hiddenByDefault?: boolean
+}
+
+const teamKey = (sport: Sport, team: string, isWomen: boolean) =>
+  `${sport}:${team}:${isWomen}`
+
+export const matchTeamKey = (match: Match) =>
+  teamKey(match.sport, match.team, match.isWomen)
+
+export const teamFilterKey = (filter: TeamFilter) =>
+  teamKey(filter.sport, filter.team, filter.isWomen)
+
+export const TEAM_FILTERS: TeamFilter[] = [
+  { sport: 'football', isWomen: false, team: 'Real Madrid' },
+  { sport: 'football', isWomen: false, team: 'Real Madrid Castilla' },
+  {
+    sport: 'football',
+    isWomen: false,
+    team: 'Real Madrid C',
+    hiddenByDefault: true,
+  },
+  {
+    sport: 'football',
+    isWomen: false,
+    team: 'Juvenil A',
+    hiddenByDefault: true,
+  },
+  { sport: 'football', isWomen: true, team: 'Real Madrid' },
+  {
+    sport: 'football',
+    isWomen: true,
+    team: 'Real Madrid B femenino',
+    hiddenByDefault: true,
+  },
+  { sport: 'basketball', isWomen: false, team: 'Real Madrid' },
+]
+
+const ALL_TEAM_KEYS = TEAM_FILTERS.map(teamFilterKey)
+
+const DEFAULT_EXCLUDED_TEAMS = TEAM_FILTERS.filter(t => t.hiddenByDefault).map(
+  teamFilterKey,
+)
+
 export const useFormStore = defineStore(
   'ticket-form',
   () => {
@@ -35,9 +93,15 @@ export const useFormStore = defineStore(
     const phone = ref('')
     const telegram = ref('')
     const email = ref('')
-    const showAway = ref(true)
-    const showWomen = ref(true)
-    const showCantera = ref(true)
+    // Save what is hidden, otherwise a new club team would not appear for those
+    // who have already visited
+    const excludedTeams = ref<string[]>([...DEFAULT_EXCLUDED_TEAMS])
+    const selectedTeams = computed({
+      get: () => ALL_TEAM_KEYS.filter(k => !excludedTeams.value.includes(k)),
+      set: keys => {
+        excludedTeams.value = ALL_TEAM_KEYS.filter(k => !keys.includes(k))
+      },
+    })
     const ticketCategory = ref<string | null>(null)
     const personalData = ref<PersonalData>({
       firstName: '',
@@ -75,9 +139,8 @@ export const useFormStore = defineStore(
       phone,
       telegram,
       email,
-      showAway,
-      showWomen,
-      showCantera,
+      excludedTeams,
+      selectedTeams,
       ticketCategory,
       personalData,
       selectedMatch,
@@ -94,9 +157,7 @@ export const useFormStore = defineStore(
         'telegram',
         'email',
         'personalData',
-        'showAway',
-        'showWomen',
-        'showCantera',
+        'excludedTeams',
       ],
     },
   },

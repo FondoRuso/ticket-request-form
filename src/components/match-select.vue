@@ -1,5 +1,6 @@
 <template>
   <q-select
+    ref="select"
     :model-value="modelValue"
     label="Матч"
     :options="matches"
@@ -8,7 +9,7 @@
     lazy-rules
     :rules="[requiredMatchRule]"
     @update:model-value="$emit('update:modelValue', $event)"
-    @popup-show="matchesStore.refreshMatches()"
+    @popup-show="onPopupShow"
   >
     <template #option="{ opt, itemProps }">
       <q-item v-bind="itemProps">
@@ -18,7 +19,7 @@
           >
           <q-item-label v-else>{{ opt.vs }} vs {{ opt.team }}</q-item-label>
           <q-item-label caption>
-            {{ opt.tournament }} &middot;
+            {{ sportEmoji(opt.sport) }} {{ opt.tournament }} &middot;
             {{ formatMatchDate(opt.date, opt.isDateConfirmed) }}
           </q-item-label>
           <q-item-label
@@ -68,6 +69,7 @@
 
     <template #selected-item="{ opt }">
       <span v-if="opt">
+        {{ sportEmoji(opt.sport) }}
         <template v-if="opt.atHome">{{ opt.team }} vs {{ opt.vs }}</template>
         <template v-else>{{ opt.vs }} vs {{ opt.team }}</template>
         &middot;
@@ -81,22 +83,37 @@
 </template>
 
 <script setup lang="ts">
+import type { QSelect } from 'quasar'
 import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
-import type { Match } from 'stores/form-store'
+import { sportEmoji, type Match } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
+import { useTemplateRef } from 'vue'
 
 const matchesStore = useMatchesStore()
 
-defineProps<{
+const props = defineProps<{
   modelValue: Match | null
   matches: Match[]
   loading: boolean
+  noTeamsSelected: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   'update:modelValue': [value: Match | null]
+  openFilters: []
 }>()
+
+const select = useTemplateRef<QSelect>('select')
+
+function onPopupShow() {
+  if (props.noTeamsSelected) {
+    select.value?.hidePopup()
+    emit('openFilters')
+    return
+  }
+  matchesStore.refreshMatches()
+}
 
 function formatMatchLabel(match: Match): string {
   const label = match.atHome
