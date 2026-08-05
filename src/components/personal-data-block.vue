@@ -41,13 +41,17 @@
         :model-value="formattedBirthDate"
         name="birthDate"
         label="Дата рождения"
+        input-class="cursor-pointer"
         lazy-rules
         :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
         readonly
+        @click="showBirthDatePicker = true"
+        @keyup.enter="showBirthDatePicker = true"
       >
         <template #append>
           <q-icon name="event" class="cursor-pointer">
             <q-popup-proxy
+              v-model="showBirthDatePicker"
               cover
               transition-show="scale"
               transition-hide="scale"
@@ -88,7 +92,7 @@
 import { formatBirthDate } from 'src/utils/date'
 import { requiredRule } from 'src/utils/validation'
 import type { PersonalData } from 'stores/form-store'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   modelValue: PersonalData
@@ -105,6 +109,7 @@ function update(field: keyof PersonalData, value: string) {
 const formattedBirthDate = computed(() =>
   formatBirthDate(props.modelValue.birthDate),
 )
+const showBirthDatePicker = ref(false)
 </script>
 
 <style scoped lang="sass">
