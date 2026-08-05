@@ -139,7 +139,7 @@
           />
 
           <PersonalDataBlock
-            v-if="showPersonalData"
+            v-if="formStore.isPersonalDataApplicable"
             v-model="formStore.personalData"
             class="q-mt-lg"
           />
@@ -252,10 +252,6 @@ const isFirstTeam = computed(() => {
   const m = formStore.selectedMatch
   return m !== null && m.sport === 'football' && !m.isWomen && !m.isCantera
 })
-
-const showPersonalData = computed(
-  () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,
-)
 
 function isPastDeadline(): boolean {
   const m = formStore.selectedMatch

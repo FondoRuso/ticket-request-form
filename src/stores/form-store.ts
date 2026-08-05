@@ -125,8 +125,11 @@ export const useFormStore = defineStore(
       )
     })
 
+    const isPersonalDataApplicable = computed(
+      () => selectedMatch.value !== null && !selectedMatch.value.atHome,
+    )
+
     function getSubmitData() {
-      const isAway = selectedMatch.value && !selectedMatch.value.atHome
       return {
         memberId: member.value?.id ?? null,
         memberName: member.value?.name ?? '',
@@ -137,7 +140,9 @@ export const useFormStore = defineStore(
         ticketCategory: isTicketCategoryApplicable.value
           ? ticketCategory.value
           : null,
-        personalData: isAway ? { ...personalData.value } : null,
+        personalData: isPersonalDataApplicable.value
+          ? { ...personalData.value }
+          : null,
       }
     }
 
@@ -159,6 +164,7 @@ export const useFormStore = defineStore(
       selectedMatch,
       submitted,
       isTicketCategoryApplicable,
+      isPersonalDataApplicable,
       getSubmitData,
       resetForm,
     }
