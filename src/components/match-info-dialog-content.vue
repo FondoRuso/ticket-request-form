@@ -15,8 +15,8 @@
         <p>Время матчей указано по&nbsp;Мадриду.</p>
 
         <p>
-          Расписание обновляется ежедневно в&nbsp;{{ localTime }} по&nbsp;вашему
-          местному времени на&nbsp;основе данных
+          Расписание обновляется ежедневно около&nbsp;{{ localTime }}
+          по&nbsp;вашему местному времени на&nbsp;основе данных
           <a
             href="https://www.realmadrid.com/es-ES/calendario"
             target="_blank"
@@ -73,10 +73,19 @@ defineEmits<{
 }>()
 
 const dialogTitleId = useId()
-const midnightCET = new Date()
-midnightCET.setUTCHours(23, 0, 0, 0) // 00:00 CET = 23:00 UTC
+const now = new Date()
+const madridHour = Number(
+  new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Madrid',
+    hour: 'numeric',
+    hourCycle: 'h23',
+  }).format(now),
+)
+const madridUtcOffsetHours = (madridHour - now.getUTCHours() + 24) % 24
+const updateTime = new Date(now)
+updateTime.setUTCHours(24 - madridUtcOffsetHours, 0, 0, 0)
 
-const localTime = midnightCET.toLocaleTimeString([], {
+const localTime = updateTime.toLocaleTimeString([], {
   hour: '2-digit',
   minute: '2-digit',
 })
