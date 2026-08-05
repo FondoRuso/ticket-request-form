@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog]
 
 ### Added
 
+- Аналитика на self-hosted OpenPanel: воронка заявки, спрос по матчам, срабатывания дедлайна, незаполненные поля и ошибки загрузки
+- Переменные окружения `OPENPANEL_API_URL` и `OPENPANEL_CLIENT_ID`; без них аналитика выключена
+
 ### Changed
 
 ### Deprecated
@@ -15,6 +18,8 @@ The format is based on [Keep a Changelog]
 ### Fixed
 
 ### Security
+
+- Персональные данные (ФИО, телефон, почта, дата рождения, номер документа) не попадают в аналитику: события несут только выбор и результат, `identify()` и session replay не используются
 
 ### Internal
 
