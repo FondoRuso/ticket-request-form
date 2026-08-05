@@ -4,7 +4,13 @@
       <!-- SUCCESS STATE -->
       <template v-if="formStore.submitted">
         <div class="full-width column items-center q-mt-xl q-pt-xl">
-          <div class="text-h5 q-mb-lg">Спасибо за заявку</div>
+          <h1
+            ref="successHeading"
+            tabindex="-1"
+            class="text-h5 q-mt-none q-mb-lg"
+          >
+            Спасибо за заявку
+          </h1>
           <a
             :href="requestsViewUrl"
             target="_blank"
@@ -129,6 +135,13 @@
             </button>
           </div>
 
+          <div
+            class="app-sr-only"
+            aria-live="polite"
+            aria-atomic="true"
+            v-text="matchesStore.loading ? 'Загружаем список матчей…' : ''"
+          />
+
           <q-banner
             v-if="matchesStore.error"
             class="text-white bg-negative q-mt-sm"
@@ -227,7 +240,7 @@ import {
 } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { useMembersStore, type Member } from 'stores/members-store'
-import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 type FiltersSource = 'link' | 'match_field'
 
@@ -254,6 +267,7 @@ const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
+const successHeading = useTemplateRef<HTMLHeadingElement>('successHeading')
 const matchSelect = useTemplateRef<InstanceType<typeof MatchSelect>>(
   'matchSelect',
 )
@@ -407,6 +421,8 @@ async function onSubmit() {
         withTelegram: data.telegram.trim().length > 0,
       })
     }
+    await nextTick()
+    successHeading.value?.focus()
   } catch (err) {
     track('request_failed', { status })
     $q.notify({
