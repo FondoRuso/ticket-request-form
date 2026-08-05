@@ -128,7 +128,7 @@
           />
 
           <q-select
-            v-if="showTicketCategory"
+            v-if="formStore.isTicketCategoryApplicable"
             v-model="formStore.ticketCategory"
             label="Категория билета"
             :options="TICKET_CATEGORIES"
@@ -252,10 +252,6 @@ const isFirstTeam = computed(() => {
   const m = formStore.selectedMatch
   return m !== null && m.sport === 'football' && !m.isWomen && !m.isCantera
 })
-
-const showTicketCategory = computed(
-  () => isFirstTeam.value && formStore.selectedMatch!.atHome,
-)
 
 const showPersonalData = computed(
   () => formStore.selectedMatch !== null && !formStore.selectedMatch.atHome,

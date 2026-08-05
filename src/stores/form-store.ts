@@ -114,6 +114,17 @@ export const useFormStore = defineStore(
     const selectedMatch = ref<Match | null>(null)
     const submitted = ref(false)
 
+    const isTicketCategoryApplicable = computed(() => {
+      const m = selectedMatch.value
+      return (
+        m !== null &&
+        m.sport === 'football' &&
+        !m.isWomen &&
+        !m.isCantera &&
+        m.atHome
+      )
+    })
+
     function getSubmitData() {
       const isAway = selectedMatch.value && !selectedMatch.value.atHome
       return {
@@ -123,7 +134,9 @@ export const useFormStore = defineStore(
         telegram: telegram.value,
         email: email.value,
         match: selectedMatch.value,
-        ticketCategory: ticketCategory.value,
+        ticketCategory: isTicketCategoryApplicable.value
+          ? ticketCategory.value
+          : null,
         personalData: isAway ? { ...personalData.value } : null,
       }
     }
@@ -145,6 +158,7 @@ export const useFormStore = defineStore(
       personalData,
       selectedMatch,
       submitted,
+      isTicketCategoryApplicable,
       getSubmitData,
       resetForm,
     }
