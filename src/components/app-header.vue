@@ -1,10 +1,10 @@
 <template>
-  <div class="row items-center q-gutter-sm q-mb-md full-width">
+  <div class="app-header row items-center q-gutter-sm q-mb-md full-width">
     <div class="logo-crop">
       <img src="/logo.svg" alt="Фондо Русо" class="logo-img" />
     </div>
-    <div>
-      <div class="text-h4">Заявка на билет</div>
+    <div class="app-header__copy">
+      <div class="app-header__title text-h4">Заявка на билет</div>
       <a
         href="https://fondoruso.ru"
         target="_blank"
@@ -17,6 +17,15 @@
 </template>
 
 <style scoped lang="sass">
+.app-header
+  flex-wrap: nowrap
+
+  &__copy
+    min-width: 0
+
+  &__title
+    white-space: nowrap
+
 .logo-crop
   width: 68px
   height: 64px
@@ -37,4 +46,16 @@
 
   &__tld
     font-weight: 400
+
+@media (max-width: 420px)
+  .logo-crop
+    width: 60px
+    height: 56px
+
+  .logo-img
+    height: 56px
+
+  .app-header__title
+    font-size: clamp(1.5rem, 7.5vw, 1.75rem)
+    line-height: 1.2
 </style>
