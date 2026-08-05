@@ -17,7 +17,7 @@
         >
           <div
             :id="`${uid}-${group.slug}`"
-            class="text-subtitle2 text-grey q-mt-md q-mb-xs"
+            class="app-secondary-text text-subtitle2 q-mt-md q-mb-xs"
           >
             {{ group.title }}
           </div>

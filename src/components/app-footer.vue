@@ -1,5 +1,7 @@
 <template>
-  <div class="text-caption text-grey q-mt-xl q-mb-md full-width text-center">
+  <div
+    class="app-secondary-text text-caption q-mt-xl q-mb-md full-width text-center"
+  >
     <span aria-hidden="true">Сделано с {{ heartEmoji }} для «Fondo Ruso»</span>
     <span class="app-sr-only">Сделано с любовью для «Fondo Ruso»</span><br />
     Есть проблемы? Пишите

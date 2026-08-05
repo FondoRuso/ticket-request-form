@@ -4,6 +4,14 @@ body.body--dark {
   a {
     color: #bb9fdb;
   }
+
+  .app-secondary-text {
+    color: #bdbdbd;
+  }
+
+  .app-negative-text {
+    color: #ff8a98;
+  }
 }
 
 .app-link {
@@ -59,6 +67,26 @@ body.body--dark {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+
+.app-secondary-text {
+  color: #616161;
+}
+
+.app-negative-text {
+  color: #c10015;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--q-primary);
+  outline-offset: 3px;
+}
+
+.q-checkbox:focus-within .q-checkbox__inner {
+  border-radius: 4px;
+  outline: 3px solid var(--q-primary);
+  outline-offset: 2px;
 }
 
 .app-sr-only {

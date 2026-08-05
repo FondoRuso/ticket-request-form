@@ -54,7 +54,7 @@
           >
             <template #no-option>
               <q-item>
-                <q-item-section class="text-grey">
+                <q-item-section class="app-secondary-text">
                   Нет результатов
                 </q-item-section>
               </q-item>
@@ -102,7 +102,7 @@
               @click="openFilters('link')"
             >
               <a class="app-link app-link--dotted">Фильтры</a>
-              <span class="q-ml-xs text-grey">
+              <span class="app-secondary-text q-ml-xs">
                 ·
                 {{ formStore.selectedTeams.length }}/{{ TEAM_FILTERS.length }}
               </span>

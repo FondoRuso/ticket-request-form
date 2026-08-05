@@ -1,12 +1,12 @@
 <template>
   <div class="personal-data-block full-width q-mt-md q-pa-md">
     <div class="text-subtitle1 q-mb-sm">Персональные данные</div>
-    <div class="text-body2 q-mb-xs text-grey-8">
+    <div class="app-secondary-text text-body2 q-mb-xs">
       Данные из документа, который у вас будет с собой, когда вы пойдёте
       забирать свой билет. Каждый билет забирается индивидуально при
       предъявлении документа.
     </div>
-    <div class="text-body2 q-mb-md text-grey-8">
+    <div class="app-secondary-text text-body2 q-mb-md">
       Только для выездных матчей.
     </div>
 
