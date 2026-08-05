@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog]
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+### Internal
+
+## [1.3.0] - 2026-03-05
+
+### Added
+
 - Поле «Спорт» в заявке со значениями «Футбол» и «Баскетбол»
 - Эмодзи вида спорта (⚽/🏀) перед названием турнира
 - Ссылка «Фильтры» и модальное окно с выбором команд
@@ -16,8 +32,6 @@ The format is based on [Keep a Changelog]
 - Фильтрация матчей по конкретным командам клуба вместо галочек
 - У матчей без объявленной площадки (`stadium: null`) выводится «Площадка не объявлена»
 
-### Deprecated
-
 ### Removed
 
 - Фильтр по месту проведения (домашние/гостевые)
@@ -27,10 +41,6 @@ The format is based on [Keep a Changelog]
 - Заглушка в списке матчей, когда по выбранным фильтрам нет доступных матчей
 - Категория билета больше не уходит в заявку, если для выбранного матча она не показывается
 - Скрытые команды хранятся вместо выбранных, поэтому новая команда клуба появляется у всех, а не только у новых пользователей
-
-### Security
-
-### Internal
 
 ## [1.2.0] - 2026-03-05
 
@@ -88,7 +98,8 @@ The format is based on [Keep a Changelog]
 
 <!-- Links to versions -->
 
-[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/FondoRuso/ticket-request-form/releases/tag/v1.0.0
