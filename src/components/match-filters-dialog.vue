@@ -32,9 +32,8 @@
           <div
             :id="`${uid}-${group.slug}`"
             class="app-secondary-text text-subtitle2 q-mt-md q-mb-xs"
-          >
-            {{ group.title }}
-          </div>
+            v-text="group.title"
+          />
           <q-checkbox
             v-for="team in group.teams"
             :key="team.key"
@@ -102,6 +101,7 @@ const ALL_TEAM_KEYS = TEAM_FILTERS.map(teamFilterKey)
 import { computed, useId } from 'vue'
 
 const open = defineModel<boolean>({ required: true })
+
 const selectedTeams = defineModel<string[]>('selectedTeams', { required: true })
 
 const emit = defineEmits<{

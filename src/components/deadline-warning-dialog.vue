@@ -1,9 +1,8 @@
 <template>
   <q-dialog
-    :model-value="modelValue"
+    v-model="open"
     :aria-labelledby="dialogTitleId"
     persistent
-    @update:model-value="$emit('update:modelValue', $event)"
   >
     <q-card>
       <q-card-section>
@@ -47,16 +46,16 @@ import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
 import type { Match } from 'stores/form-store'
 import { computed, useId } from 'vue'
 
+const open = defineModel<boolean>({ required: true })
+
 const props = defineProps<{
-  modelValue: boolean
   match: Match | null
   daysLeft: number
 }>()
 
 defineEmits<{
-  'update:modelValue': [value: boolean]
-  'confirm': []
-  'cancel': []
+  confirm: []
+  cancel: []
 }>()
 
 const dialogTitleId = useId()

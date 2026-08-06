@@ -12,7 +12,7 @@
 
     <div class="column q-gutter-sm">
       <q-input
-        :model-value="modelValue.firstName"
+        :model-value="model.firstName"
         name="firstName"
         label="Имя латиницей"
         autocomplete="given-name"
@@ -22,11 +22,11 @@
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
-        @update:model-value="update('firstName', ($event as string) ?? '')"
+        @update:model-value="update('firstName', $event)"
       />
 
       <q-input
-        :model-value="modelValue.lastName"
+        :model-value="model.lastName"
         name="lastName"
         label="Фамилия латиницей"
         autocomplete="family-name"
@@ -36,7 +36,7 @@
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
-        @update:model-value="update('lastName', ($event as string) ?? '')"
+        @update:model-value="update('lastName', $event)"
       />
 
       <q-input
@@ -45,14 +45,13 @@
         label="Дата рождения"
         input-class="cursor-pointer"
         lazy-rules
-        :rules="[() => !!modelValue.birthDate || 'Обязательное поле']"
+        :rules="[() => !!model.birthDate || 'Обязательное поле']"
         readonly
         @click="showBirthDatePicker = true"
         @keyup.enter="showBirthDatePicker = true"
       >
         <template #append>
           <q-btn
-            type="button"
             icon="event"
             aria-label="Выбрать дату рождения"
             flat
@@ -66,11 +65,9 @@
               transition-hide="scale"
             >
               <q-date
-                :model-value="modelValue.birthDate"
+                :model-value="model.birthDate"
                 mask="YYYY-MM-DD"
-                @update:model-value="
-                  update('birthDate', ($event as string) ?? '')
-                "
+                @update:model-value="update('birthDate', $event as string)"
               >
                 <div class="row items-center justify-end">
                   <q-btn
@@ -87,7 +84,7 @@
       </q-input>
 
       <q-input
-        :model-value="modelValue.documentNumber"
+        :model-value="model.documentNumber"
         name="documentNumber"
         label="Номер документа"
         autocomplete="off"
@@ -97,7 +94,7 @@
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
-        @update:model-value="update('documentNumber', ($event as string) ?? '')"
+        @update:model-value="update('documentNumber', $event)"
       />
     </div>
   </div>
@@ -109,20 +106,14 @@ import { requiredRule } from 'src/utils/validation'
 import type { PersonalData } from 'stores/form-store'
 import { computed, ref } from 'vue'
 
-const props = defineProps<{
-  modelValue: PersonalData
-}>()
+const model = defineModel<PersonalData>({ required: true })
 
-const emit = defineEmits<{
-  'update:modelValue': [value: PersonalData]
-}>()
-
-function update(field: keyof PersonalData, value: string) {
-  emit('update:modelValue', { ...props.modelValue, [field]: value })
+function update(field: keyof PersonalData, value: string | number | null) {
+  model.value = { ...model.value, [field]: String(value ?? '') }
 }
 
 const formattedBirthDate = computed(() =>
-  formatBirthDate(props.modelValue.birthDate),
+  formatBirthDate(model.value.birthDate),
 )
 const showBirthDatePicker = ref(false)
 </script>

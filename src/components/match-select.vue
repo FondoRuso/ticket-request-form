@@ -1,16 +1,15 @@
 <template>
   <q-select
     ref="select"
-    :model-value="modelValue"
+    v-model="model"
     name="match"
     label="Матч"
     :options="matches"
-    :loading="loading"
+    :loading
     :option-label="formatMatchLabel"
     autocomplete="off"
     lazy-rules
     :rules="[requiredMatchRule]"
-    @update:model-value="$emit('update:modelValue', $event)"
     @blur="onBlur"
     @popup-show="onPopupShow"
   >
@@ -94,28 +93,39 @@
   </q-select>
 </template>
 
+<script lang="ts">
+import { formatMatchDate } from 'src/utils/date'
+import { type Match, sportEmoji } from 'stores/form-store'
+
+function formatMatchLabel(match: Match): string {
+  const label = match.atHome
+    ? `${match.team} vs ${match.vs}`
+    : `${match.vs} vs ${match.team}`
+  return `${label} — ${formatMatchDate(match.date, match.isDateConfirmed)}`
+}
+</script>
+
 <script setup lang="ts">
 import type { QSelect } from 'quasar'
-import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
-import { type Match, sportEmoji } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { nextTick, useTemplateRef } from 'vue'
 
-const matchesStore = useMatchesStore()
+const model = defineModel<Match | null>({ required: true })
 
 const props = defineProps<{
-  modelValue: Match | null
   matches: Match[]
   loading: boolean
   noTeamsSelected: boolean
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Match | null]
-  'openFilters': []
+  openFilters: []
 }>()
 
+defineExpose({ showPopup })
+
+const matchesStore = useMatchesStore()
 const select = useTemplateRef<QSelect>('select')
 let openingFilters = false
 
@@ -139,14 +149,5 @@ async function onBlur() {
 
 function showPopup() {
   select.value?.showPopup()
-}
-
-defineExpose({ showPopup })
-
-function formatMatchLabel(match: Match): string {
-  const label = match.atHome
-    ? `${match.team} vs ${match.vs}`
-    : `${match.vs} vs ${match.team}`
-  return `${label} — ${formatMatchDate(match.date, match.isDateConfirmed)}`
 }
 </script>

@@ -1,8 +1,7 @@
 <template>
   <q-dialog
-    :model-value="modelValue"
+    v-model="open"
     :aria-labelledby="dialogTitleId"
-    @update:model-value="$emit('update:modelValue', $event)"
   >
     <q-card>
       <q-card-section>
@@ -64,33 +63,32 @@
   </q-dialog>
 </template>
 
+<script lang="ts">
+function madridMidnightInLocalTime(now: Date): string {
+  const madridHour = Number(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Madrid',
+      hour: 'numeric',
+      hourCycle: 'h23',
+    }).format(now),
+  )
+  const madridUtcOffsetHours = (madridHour - now.getUTCHours() + 24) % 24
+  const updateTime = new Date(now)
+  updateTime.setUTCHours(24 - madridUtcOffsetHours, 0, 0, 0)
+
+  return updateTime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+</script>
+
 <script setup lang="ts">
 import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
 import { useId } from 'vue'
 
-defineProps<{
-  modelValue: boolean
-}>()
-
-defineEmits<{
-  'update:modelValue': [value: boolean]
-}>()
+const open = defineModel<boolean>({ required: true })
 
 const dialogTitleId = useId()
-const now = new Date()
-const madridHour = Number(
-  new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'Europe/Madrid',
-    hour: 'numeric',
-    hourCycle: 'h23',
-  }).format(now),
-)
-const madridUtcOffsetHours = (madridHour - now.getUTCHours() + 24) % 24
-const updateTime = new Date(now)
-updateTime.setUTCHours(24 - madridUtcOffsetHours, 0, 0, 0)
-
-const localTime = updateTime.toLocaleTimeString([], {
-  hour: '2-digit',
-  minute: '2-digit',
-})
+const localTime = madridMidnightInLocalTime(new Date())
 </script>

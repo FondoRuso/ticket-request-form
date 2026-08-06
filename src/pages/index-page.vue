@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-pa-md">
     <div class="column items-center q-gutter-md page-content">
-      <!-- SUCCESS STATE -->
       <template v-if="formStore.submitted">
         <div class="full-width column items-center q-mt-xl q-pt-xl">
           <h1
@@ -28,7 +27,6 @@
         </div>
       </template>
 
-      <!-- FORM STATE -->
       <template v-else>
         <AppHeader />
 
@@ -225,6 +223,33 @@
   </q-page>
 </template>
 
+<script lang="ts">
+import type { Sport } from 'stores/form-store'
+
+type FiltersSource = 'link' | 'match_field'
+
+const SPORT_LABELS: Record<Sport, string> = {
+  football: 'Футбол',
+  basketball: 'Баскетбол',
+}
+
+function formatDateForApi(dateStr: string): string {
+  const date = new Date(dateStr)
+  const parts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(date)
+  const get = (type: string) => parts.find(p => p.type === type)?.value ?? ''
+  return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`
+}
+</script>
+
 <script setup lang="ts">
 import AppFooter from 'components/app-footer.vue'
 import AppHeader from 'components/app-header.vue'
@@ -252,31 +277,13 @@ import { useMatchesStore } from 'stores/matches-store'
 import { type Member, useMembersStore } from 'stores/members-store'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
-type FiltersSource = 'link' | 'match_field'
-
 const $q = useQuasar()
 const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
-
-function formatDateForApi(dateStr: string): string {
-  const date = new Date(dateStr)
-  const parts = new Intl.DateTimeFormat('sv-SE', {
-    timeZone: 'Europe/Madrid',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }).formatToParts(date)
-  const get = (type: string) => parts.find(p => p.type === type)?.value ?? ''
-  return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`
-}
 
 const formStore = useFormStore()
 const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
-const formRef = ref<QForm | null>(null)
+const formRef = useTemplateRef<QForm>('formRef')
 const successHeading = useTemplateRef<HTMLHeadingElement>('successHeading')
 const matchSelect =
   useTemplateRef<InstanceType<typeof MatchSelect>>('matchSelect')
@@ -374,17 +381,7 @@ async function onSubmit() {
   const data = formStore.getSubmitData()
   const match = data.match
 
-  let sport = data.match?.sport ?? ''
-  if (data.match?.sport) {
-    switch (data.match.sport) {
-      case 'football':
-        sport = 'Футбол'
-        break
-      case 'basketball':
-        sport = 'Баскетбол'
-        break
-    }
-  }
+  const sport = match ? SPORT_LABELS[match.sport] : ''
 
   const record = {
     'Имя': data.memberName,
