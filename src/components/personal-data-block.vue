@@ -11,12 +11,6 @@
     </div>
 
     <div class="column q-gutter-sm">
-      <!--
-        The rule guards against stealing focus on page load. This block is
-        rendered only after the user picks an away match, so the focus move is
-        the direct result of that action and lands on the next thing to fill in.
-      -->
-      <!-- eslint-disable vuejs-accessibility/no-autofocus -->
       <q-input
         :model-value="modelValue.firstName"
         name="firstName"
@@ -25,13 +19,11 @@
         autocapitalize="words"
         enterkeyhint="next"
         spellcheck="false"
-        autofocus
         debounce="500"
         lazy-rules
         :rules="[requiredRule]"
         @update:model-value="update('firstName', ($event as string) ?? '')"
       />
-      <!-- eslint-enable vuejs-accessibility/no-autofocus -->
 
       <q-input
         :model-value="modelValue.lastName"

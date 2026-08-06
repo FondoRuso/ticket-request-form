@@ -165,6 +165,13 @@
             @open-filters="openFilters('match_field')"
           />
 
+          <div
+            class="app-sr-only"
+            aria-live="polite"
+            aria-atomic="true"
+            v-text="personalDataAnnouncement"
+          />
+
           <q-select
             v-if="formStore.isTicketCategoryApplicable"
             v-model="formStore.ticketCategory"
@@ -500,6 +507,21 @@ watch(
   () => formStore.ticketCategory,
   category => {
     if (category) track('ticket_category_selected', { category })
+  },
+)
+
+// Picking an away match reveals four more required fields. Moving focus into
+// them would land past the block's heading and instructions, which a screen
+// reader then never reads, so announce the block instead and leave focus where
+// the user put it. The live region has to sit outside the block's `v-if` —
+// a region inserted together with its text is not reliably announced.
+const personalDataAnnouncement = ref('')
+watch(
+  () => formStore.isPersonalDataApplicable,
+  applicable => {
+    personalDataAnnouncement.value = applicable
+      ? 'Для выездного матча ниже добавлены поля с персональными данными.'
+      : ''
   },
 )
 
