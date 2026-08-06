@@ -1,0 +1,29 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+
+# TODO: remove once actions/checkout, actions/setup-node ship @v5 (Node 24 native).
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  check:
+    name: check:${{ matrix.script }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        script: [format, code]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+      # Only the build needs a browser; downloading one per lint job is wasted time.
+      - run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
+      - run: npm run check:${{ matrix.script }}

@@ -6,7 +6,15 @@
   "type": "module",
   "scripts": {
     "dev": "quasar dev",
-    "build": "quasar build && node prerender.js"
+    "build": "quasar build && node prerender.js",
+    "lint:ox": "oxlint --max-warnings 0",
+    "lint:es": "eslint --max-warnings 0 --cache",
+    "check": "run-p --continue-on-error check:*",
+    "check:code": "run-p --continue-on-error lint:*",
+    "check:format": "oxfmt --check",
+    "fix": "run-s fix:*",
+    "fix:code": "run-s \"lint:ox --fix\" \"lint:es --fix\"",
+    "fix:format": "oxfmt --write"
   },
   "dependencies": {
     "@openpanel/web": "^1.4.1",
@@ -24,6 +32,7 @@
     "autoprefixer": "^10.5.2",
     "eslint": "^10.8.0",
     "jiti": "^2.7.0",
+    "npm-run-all2": "^8.0.4",
     "oxfmt": "^0.62.0",
     "oxlint": "^1.77.0",
     "puppeteer": "^24.43.1",
