@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog]
 
 ### Internal
 
+## [1.3.2] - 2026-08-07
+
+### Internal
+
 - Проверки и деплой объединены в один workflow `ci.yml`: деплой ждёт зелёных `check:format` и `check:code` вместо того, чтобы идти параллельно с ними
 - Деплой в Yandex Object Storage теперь запускается только по тегу версии
 - `quasar prepare` в `postinstall`: без него на чистой установке нет `.quasar/tsconfig.json`, и `check:code` падал в CI на type-aware правилах ESLint
@@ -119,7 +123,8 @@ The format is based on [Keep a Changelog]
 
 <!-- Links to versions -->
 
-[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.1...HEAD
+[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.1.0...v1.2.0
