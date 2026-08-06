@@ -16,7 +16,7 @@ export const useMatchesStore = defineStore('matches', () => {
     error.value = null
     try {
       const response = await fetch(`${process.env.DATA_BASE_URL}/matches.json`)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      if (!response.ok) throw new Error(`HTTP ${String(response.status)}`)
       matches.value = await response.json()
       lastFetchDate = getCetDate()
     } catch (e) {

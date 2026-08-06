@@ -230,9 +230,9 @@ import type { QForm } from 'quasar'
 import { useQuasar } from 'quasar'
 import { matchProperties, track } from 'src/utils/analytics'
 import {
+  daysUntilMatch,
   DEADLINE_DAYS_AWAY,
   DEADLINE_DAYS_HOME,
-  daysUntilMatch,
 } from 'src/utils/date'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import {
@@ -242,7 +242,7 @@ import {
   useFormStore,
 } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
-import { useMembersStore, type Member } from 'stores/members-store'
+import { type Member, useMembersStore } from 'stores/members-store'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 type FiltersSource = 'link' | 'match_field'
@@ -262,7 +262,7 @@ function formatDateForApi(dateStr: string): string {
     second: '2-digit',
     hour12: false,
   }).formatToParts(date)
-  const get = (type: string) => parts.find(p => p.type === type)!.value
+  const get = (type: string) => parts.find(p => p.type === type)?.value ?? ''
   return `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')}`
 }
 
@@ -379,6 +379,10 @@ async function onSubmit() {
     }
   }
 
+  // NocoDB's date column rejects an empty string, so an unfilled birth date has
+  // to go out as an explicit null.
+  const birthDate = data.personalData?.birthDate ?? ''
+
   const record = {
     'Имя': data.memberName,
     'Дата матча': match?.date ? formatDateForApi(match.date) : null,
@@ -394,7 +398,7 @@ async function onSubmit() {
     'Электропочта': data.email,
     'Имя лат.': data.personalData?.firstName ?? '',
     'Фамилия лат.': data.personalData?.lastName ?? '',
-    'Дата рождения': data.personalData?.birthDate || null,
+    'Дата рождения': birthDate === '' ? null : birthDate,
     '№ документа': data.personalData?.documentNumber ?? '',
     'Raw': JSON.stringify(data),
   }
@@ -413,7 +417,7 @@ async function onSubmit() {
       },
     )
     status = res.status
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+    if (!res.ok) throw new Error(`${String(res.status)} ${res.statusText}`)
     formStore.submitted = true
     if (match) {
       track('request_submitted', {
@@ -461,7 +465,7 @@ function onFiltersClosed(completed: boolean) {
 
 function reloadMatches() {
   track('matches_reload_requested')
-  matchesStore.fetchMatches()
+  void matchesStore.fetchMatches()
 }
 
 function handleNewRequest() {
@@ -479,7 +483,9 @@ watch(
     formStore.ticketCategory,
     formStore.personalData,
   ],
-  () => track('form_started'),
+  () => {
+    track('form_started')
+  },
   { deep: true, once: true },
 )
 
@@ -513,7 +519,7 @@ watch(showFilters, open => {
 })
 
 onMounted(() => {
-  matchesStore.fetchMatches()
+  void matchesStore.fetchMatches()
 })
 </script>
 

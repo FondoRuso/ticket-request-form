@@ -49,7 +49,7 @@ export interface TeamFilter {
 }
 
 const teamKey = (sport: Sport, team: string, isWomen: boolean) =>
-  `${sport}:${team}:${isWomen}`
+  `${sport}:${team}:${String(isWomen)}`
 
 export const matchTeamKey = (match: Match) =>
   teamKey(match.sport, match.team, match.isWomen)

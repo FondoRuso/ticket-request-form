@@ -98,7 +98,7 @@
 import type { QSelect } from 'quasar'
 import { formatMatchDate } from 'src/utils/date'
 import { requiredMatchRule } from 'src/utils/validation'
-import { sportEmoji, type Match } from 'stores/form-store'
+import { type Match, sportEmoji } from 'stores/form-store'
 import { useMatchesStore } from 'stores/matches-store'
 import { nextTick, useTemplateRef } from 'vue'
 
@@ -126,7 +126,7 @@ function onPopupShow() {
     emit('openFilters')
     return
   }
-  matchesStore.refreshMatches()
+  void matchesStore.refreshMatches()
 }
 
 async function onBlur() {

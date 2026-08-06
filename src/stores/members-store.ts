@@ -15,13 +15,13 @@ export const useMembersStore = defineStore('members', () => {
 
   async function fetchMembers() {
     if (members.value.length > 0) {
-      if (getCetDate() !== lastFetchDate) refreshMembers()
+      if (getCetDate() !== lastFetchDate) void refreshMembers()
       return
     }
     error.value = null
     try {
       const response = await fetch(`${process.env.DATA_BASE_URL}/members.json`)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      if (!response.ok) throw new Error(`HTTP ${String(response.status)}`)
       members.value = await response.json()
       lastFetchDate = getCetDate()
     } catch (e) {

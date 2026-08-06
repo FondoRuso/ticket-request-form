@@ -19,8 +19,8 @@ interface MatchProperties {
 // The form collects names, phone numbers, emails, birth dates and document
 // numbers. None of it may appear here — only choices and outcomes.
 interface EventProperties {
-  form_started: void
-  match_info_opened: void
+  form_started: undefined
+  match_info_opened: undefined
   match_filters_opened: { source: 'link' | 'match_field' }
   match_filters_changed: { selectedTeams: number; totalTeams: number }
   match_selected: MatchProperties
@@ -42,16 +42,16 @@ interface EventProperties {
     withTelegram: boolean
   }
   request_failed: { status: number }
-  request_status_opened: void
-  new_request_started: void
+  request_status_opened: undefined
+  new_request_started: undefined
   matches_load_failed: { reason: string }
-  matches_reload_requested: void
+  matches_reload_requested: undefined
   members_load_failed: { reason: string }
 }
 
 type AnalyticsEvent = keyof EventProperties
 
-type TrackArgs<E extends AnalyticsEvent> = EventProperties[E] extends void
+type TrackArgs<E extends AnalyticsEvent> = EventProperties[E] extends undefined
   ? [event: E]
   : [event: E, properties: EventProperties[E]]
 
@@ -68,8 +68,7 @@ let failedSends = 0
 
 // The production bundle is rendered by Puppeteer at build time (prerender.js);
 // nothing it does may reach the analytics instance.
-const isPrerender = () =>
-  window.__PRERENDER__ === true || navigator.webdriver === true
+const isPrerender = () => window.__PRERENDER__ === true || navigator.webdriver
 
 export function initAnalytics(router: Router) {
   const apiUrl = process.env.OPENPANEL_API_URL
@@ -125,12 +124,16 @@ function watchSend(sent: Promise<unknown>) {
     noteSendResult(result)
   }
 
-  void sent.then(finish, () => finish(null))
+  void sent.then(finish, () => {
+    finish(null)
+  })
 
   // A blocked host tends to swallow the request rather than refuse it, so the
   // SDK never reports a failure and the promise never settles. One stuck
   // request is harmless; a new one per event for the whole session is not.
-  setTimeout(() => finish(null), SEND_TIMEOUT_MS)
+  setTimeout(() => {
+    finish(null)
+  }, SEND_TIMEOUT_MS)
 }
 
 // The SDK resolves to `null` once a request is beyond saving — retries

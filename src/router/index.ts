@@ -9,12 +9,15 @@ import { defineRouter } from '#q-app/wrappers'
 
 import routes from './routes'
 
+function historyFactory() {
+  if (process.env.SERVER) return createMemoryHistory
+  return process.env.VUE_ROUTER_MODE === 'history'
+    ? createWebHistory
+    : createWebHashHistory
+}
+
 export default defineRouter(function () {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : process.env.VUE_ROUTER_MODE === 'history'
-      ? createWebHistory
-      : createWebHashHistory
+  const createHistory = historyFactory()
 
   return createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),

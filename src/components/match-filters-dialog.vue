@@ -66,10 +66,10 @@
 
 <script lang="ts">
 import {
+  type Sport,
   sportEmoji,
   TEAM_FILTERS,
   teamFilterKey,
-  type Sport,
 } from 'stores/form-store'
 
 interface TeamGroup {

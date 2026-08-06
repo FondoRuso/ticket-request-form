@@ -17,7 +17,7 @@ export function getCetDate(): string {
     month: '2-digit',
     day: '2-digit',
   }).formatToParts(now)
-  const get = (type: string) => parts.find(p => p.type === type)!.value
+  const get = (type: string) => parts.find(p => p.type === type)?.value ?? ''
   return `${get('year')}-${get('month')}-${get('day')}`
 }
 
