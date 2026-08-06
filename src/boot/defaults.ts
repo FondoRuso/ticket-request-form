@@ -1,7 +1,8 @@
 import { QInput, QSelect } from 'quasar'
-import { boot } from 'quasar/wrappers'
 
-export default boot(() => {
+import { defineBoot } from '#q-app/wrappers'
+
+export default defineBoot(() => {
   if (QInput.props.outlined) {
     QInput.props.outlined = {
       type: QInput.props.outlined,
