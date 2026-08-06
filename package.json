@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build && node prerender.js",
+    "postinstall": "quasar prepare",
     "lint:ox": "oxlint --max-warnings 0",
     "lint:es": "eslint --max-warnings 0 --cache",
     "check": "run-p --continue-on-error check:*",
