@@ -1,9 +1,8 @@
-import { lookup } from 'node:dns/promises'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { join } from 'node:path'
 
-import puppeteer from 'puppeteer'
+import { launch } from 'puppeteer'
 
 const DIST_DIR = join(import.meta.dirname, 'dist/spa')
 const PORT = 4173
@@ -51,7 +50,7 @@ async function prerender() {
   const server = await startServer()
   console.log(`Static server running on port ${PORT}`)
 
-  const browser = await puppeteer.launch({
+  const browser = await launch({
     headless: true,
     args: process.getuid?.() === 0 || process.env.CI ? ['--no-sandbox'] : [],
   })
