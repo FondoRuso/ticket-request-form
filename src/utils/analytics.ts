@@ -55,7 +55,16 @@ type TrackArgs<E extends AnalyticsEvent> = EventProperties[E] extends void
   ? [event: E]
   : [event: E, properties: EventProperties[E]]
 
+// The analytics host is the only thing this app talks to outside Russia, and it
+// can be blocked at any time. Everything below is written so that a dead host
+// costs the user nothing: no throw ever escapes, and once the host has clearly
+// stopped answering we stop asking for the rest of the session.
+const MAX_FAILED_SENDS = 3
+const SEND_TIMEOUT_MS = 10_000
+
 let client: OpenPanel | null = null
+let stopped = false
+let failedSends = 0
 
 // The production bundle is rendered by Puppeteer at build time (prerender.js);
 // nothing it does may reach the analytics instance.
@@ -73,7 +82,14 @@ export function initAnalytics(router: Router) {
   // A boot file that throws makes Quasar log the error and skip mounting
   // altogether, leaving a blank page — see @quasar/app-vite client-entry.
   try {
-    client = new OpenPanel({ apiUrl, clientId, trackOutgoingLinks: true })
+    client = new OpenPanel({
+      apiUrl,
+      clientId,
+      trackOutgoingLinks: true,
+      // Runs before every send, including the ones the SDK makes on its own for
+      // outgoing links, so this is the one switch that silences all of them.
+      filter: () => !stopped,
+    })
     client.setGlobalProperties({ appVersion: process.env.APP_VERSION })
   } catch {
     client = null
@@ -86,7 +102,7 @@ export function initAnalytics(router: Router) {
     try {
       client?.screenView(to.path)
     } catch {
-      client = null
+      stopped = true
     }
   })
 }
@@ -94,10 +110,38 @@ export function initAnalytics(router: Router) {
 export function track<E extends AnalyticsEvent>(...args: TrackArgs<E>) {
   const [event, properties] = args as [AnalyticsEvent, TrackProperties?]
   try {
-    void client?.track(event, properties)
+    const sent = client?.track(event, properties)
+    if (sent) watchSend(sent)
   } catch {
-    client = null
+    stopped = true
   }
+}
+
+function watchSend(sent: Promise<unknown>) {
+  let done = false
+  const finish = (result: unknown) => {
+    if (done) return
+    done = true
+    noteSendResult(result)
+  }
+
+  void sent.then(finish, () => finish(null))
+
+  // A blocked host tends to swallow the request rather than refuse it, so the
+  // SDK never reports a failure and the promise never settles. One stuck
+  // request is harmless; a new one per event for the whole session is not.
+  setTimeout(() => finish(null), SEND_TIMEOUT_MS)
+}
+
+// The SDK resolves to `null` once a request is beyond saving — retries
+// exhausted, or rejected outright. A blocked host stays blocked, so a short run
+// of those is reason enough to give up instead of retrying all session.
+function noteSendResult(result: unknown) {
+  if (result !== null) {
+    failedSends = 0
+    return
+  }
+  if (++failedSends >= MAX_FAILED_SENDS) stopped = true
 }
 
 export function matchProperties(match: Match): MatchProperties {
