@@ -56,7 +56,16 @@ The guarantees that keep it that way:
 
 ## Production Deployment
 
-The production site is hosted on Yandex Object Storage (static website hosting). A GitHub Actions workflow (`.github/workflows/deploy-yandex.yml`) deploys on every push to `dev`. Manual runs are available via the **Run workflow** button in the Actions tab.
+The production site is hosted on Yandex Object Storage (static website hosting). A single GitHub Actions workflow (`.github/workflows/ci.yml`) runs the linters on every push and pull request, and deploys **only for a version tag** whose checks came back green. Manual runs are available via the **Run workflow** button in the Actions tab — they deploy whatever ref you pick, still behind the same checks.
+
+### Releasing
+
+Update `CHANGELOG.md`, then run:
+
+```bash
+pnpm version minor # or patch/major
+git push --follow-tags
+```
 
 ### Required GitHub Secrets
 
