@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog]
 
 ### Internal
 
+- Проверки и деплой объединены в один workflow `ci.yml`: деплой ждёт зелёных `check:format` и `check:code` вместо того, чтобы идти параллельно с ними
+- Деплой в Yandex Object Storage теперь запускается только по тегу версии
+- `quasar prepare` в `postinstall`: без него на чистой установке нет `.quasar/tsconfig.json`, и `check:code` падал в CI на type-aware правилах ESLint
+
 ## [1.3.1] - 2026-08-07
 
 ### Added
