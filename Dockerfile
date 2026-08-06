@@ -1,5 +1,5 @@
 # Stage 1: Build the SPA
-FROM node:22-slim AS build
+FROM node:24-slim AS build
 
 # Install Chromium dependencies for Puppeteer prerender
 RUN apt-get update && apt-get install -y --no-install-recommends \
