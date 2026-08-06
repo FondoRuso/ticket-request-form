@@ -6,9 +6,6 @@ The format is based on [Keep a Changelog]
 
 ### Added
 
-- Аналитика на self-hosted OpenPanel: воронка заявки, спрос по матчам, срабатывания дедлайна, незаполненные поля и ошибки загрузки
-- Переменные окружения `OPENPANEL_API_URL` и `OPENPANEL_CLIENT_ID`; без них аналитика выключена
-
 ### Changed
 
 ### Deprecated
@@ -16,6 +13,17 @@ The format is based on [Keep a Changelog]
 ### Removed
 
 ### Fixed
+
+### Security
+
+### Internal
+
+## [1.3.1] - 2026-08-07
+
+### Added
+
+- Аналитика на self-hosted OpenPanel: воронка заявки, спрос по матчам, срабатывания дедлайна, незаполненные поля и ошибки загрузки
+- Переменные окружения `OPENPANEL_API_URL` и `OPENPANEL_CLIENT_ID`; без них аналитика выключена
 
 ### Security
 
@@ -27,7 +35,7 @@ The format is based on [Keep a Changelog]
 - Конфиг PostCSS переведён с `postcss.config.cjs` на `postcss.config.mts`
 - Переход с npm на pnpm 10; lock-файл — `pnpm-lock.yaml`
 
-## [1.3.0] - 2026-03-05
+## [1.3.0] - 2026-08-05
 
 ### Added
 
@@ -107,7 +115,8 @@ The format is based on [Keep a Changelog]
 
 <!-- Links to versions -->
 
-[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.0...HEAD
+[unreleased]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/FondoRuso/ticket-request-form/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/FondoRuso/ticket-request-form/compare/v1.0.0...v1.1.0
