@@ -1,14 +1,12 @@
 {
   "name": "ticket-request-form",
   "version": "1.3.0",
-  "description": "Форма заявки на билет для членов фан-клуба Fondo Ruso",
-  "productName": "Заявка на билет",
   "private": true,
+  "description": "Форма заявки на билет для членов фан-клуба Fondo Ruso",
   "type": "module",
   "scripts": {
     "dev": "quasar dev",
-    "build": "quasar build && node prerender.js",
-    "format": "prettier --write \"src/**/*.{ts,vue,scss,sass,css,json}\" \"*.{json,js,ts}\""
+    "build": "quasar build && node prerender.js"
   },
   "dependencies": {
     "@openpanel/web": "^1.4.1",
@@ -20,11 +18,17 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@govnotech/conventions": "^0.1.1",
     "@quasar/app-vite": "^2.6.2",
     "@types/node": "^22.20.0",
     "autoprefixer": "^10.5.2",
+    "eslint": "^10.8.0",
+    "jiti": "^2.7.0",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
     "puppeteer": "^24.43.1",
     "typescript": "~5.7.0",
     "vue-tsc": "^2.2.0"
-  }
+  },
+  "productName": "Заявка на билет"
 }
