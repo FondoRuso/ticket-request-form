@@ -1,7 +1,9 @@
+// Text fields hand over a string, the member select hands over a `Member`, so
+// only the string case has an empty value worth rejecting.
 export const requiredRule = (val: unknown) =>
-  (typeof val === 'string' && val.trim().length > 0) ||
-  typeof val === 'number' ||
-  'Обязательное поле'
+  (typeof val === 'string'
+    ? val.trim().length > 0
+    : val !== null && val !== undefined) || 'Обязательное поле'
 
 export const requiredMatchRule = (val: unknown) =>
   val !== null || 'Обязательное поле'
