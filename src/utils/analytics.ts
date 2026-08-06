@@ -70,17 +70,34 @@ export function initAnalytics(router: Router) {
   // so an unconfigured build must stay silent rather than pick a default.
   if (!apiUrl || !clientId || isPrerender()) return
 
-  client = new OpenPanel({ apiUrl, clientId, trackOutgoingLinks: true })
-  client.setGlobalProperties({ appVersion: process.env.APP_VERSION })
+  // A boot file that throws makes Quasar log the error and skip mounting
+  // altogether, leaving a blank page — see @quasar/app-vite client-entry.
+  try {
+    client = new OpenPanel({ apiUrl, clientId, trackOutgoingLinks: true })
+    client.setGlobalProperties({ appVersion: process.env.APP_VERSION })
+  } catch {
+    client = null
+    return
+  }
 
   // Automatic screen views report `window.location.href`, and the server turns
   // every query parameter into a stored property. Send the bare path instead.
-  router.afterEach(to => client?.screenView(to.path))
+  router.afterEach(to => {
+    try {
+      client?.screenView(to.path)
+    } catch {
+      client = null
+    }
+  })
 }
 
 export function track<E extends AnalyticsEvent>(...args: TrackArgs<E>) {
   const [event, properties] = args as [AnalyticsEvent, TrackProperties?]
-  void client?.track(event, properties)
+  try {
+    void client?.track(event, properties)
+  } catch {
+    client = null
+  }
 }
 
 export function matchProperties(match: Match): MatchProperties {
