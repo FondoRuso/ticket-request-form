@@ -90,15 +90,37 @@ The app will be available at `http://localhost:8080`.
 
 ## Local Development
 
+Requires Node >= 22.18 and [pnpm](https://pnpm.io) 10 (`corepack enable pnpm`
+picks up the version pinned in `package.json`). Do not use npm here — it would
+write a second lock file next to `pnpm-lock.yaml`.
+
 ```bash
 pnpm install
 pnpm run dev # start dev server with hot reload
+```
+
+Code style, linting, and formatting come from
+[`@govnotech/conventions`](https://www.npmjs.com/package/@govnotech/conventions):
+
+```bash
+pnpm run check # Oxfmt, Oxlint and ESLint
+pnpm run fix   # apply what they can fix on their own
 ```
 
 ## Production Build (without Docker)
 
 ```bash
 pnpm run build # builds SPA + prerenders index.html
+```
+
+The prerender step drives Chromium, which arrives through Puppeteer's
+postinstall — allowed for that one package in `pnpm-workspace.yaml`. pnpm caches
+build side effects globally, so an install can come back green having skipped
+that postinstall and left no browser behind. If the build fails with
+`Could not find Chrome`, install it directly:
+
+```bash
+pnpm exec puppeteer browsers install chrome
 ```
 
 Output is in `dist/spa/`. Serve with any web server that supports SPA history-mode fallback (e.g., nginx with `try_files $uri $uri/ /index.html`).
