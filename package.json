@@ -40,5 +40,9 @@
     "typescript": "~5.7.0",
     "vue-tsc": "^2.2.0"
   },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "packageManager": "pnpm@10.28.2",
   "productName": "Заявка на билет"
 }

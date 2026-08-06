@@ -91,14 +91,14 @@ The app will be available at `http://localhost:8080`.
 ## Local Development
 
 ```bash
-npm install
-npm run dev # start dev server with hot reload
+pnpm install
+pnpm run dev # start dev server with hot reload
 ```
 
 ## Production Build (without Docker)
 
 ```bash
-npm run build # builds SPA + prerenders index.html
+pnpm run build # builds SPA + prerenders index.html
 ```
 
 Output is in `dist/spa/`. Serve with any web server that supports SPA history-mode fallback (e.g., nginx with `try_files $uri $uri/ /index.html`).

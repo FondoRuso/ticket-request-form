@@ -23,6 +23,10 @@ The format is based on [Keep a Changelog]
 
 ### Internal
 
+- Единый код-стайл через `@govnotech/conventions`: Oxfmt вместо Prettier, Oxlint и ESLint на пресетах Quasar; скрипты `check`/`fix` и отдельный CI-workflow
+- Конфиг PostCSS переведён с `postcss.config.cjs` на `postcss.config.mts`
+- Переход с npm на pnpm 10; lock-файл — `pnpm-lock.yaml`
+
 ## [1.3.0] - 2026-03-05
 
 ### Added

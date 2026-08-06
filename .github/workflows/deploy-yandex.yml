@@ -21,19 +21,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Must come before setup-node: `cache: 'pnpm'` needs pnpm on PATH.
+      - uses: pnpm/action-setup@v6
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Cache Puppeteer browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/puppeteer
-          key: puppeteer-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: puppeteer-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      # pnpm caches build side effects, so a cache hit can restore puppeteer
+      # already "built" and skip its postinstall — leaving no browser behind on
+      # a green install. No-op once the cache above hits.
+      - name: Ensure Chrome for prerender
+        run: pnpm exec puppeteer browsers install chrome
 
       - name: Build SPA + prerender
         env:
@@ -43,7 +52,7 @@ jobs:
           DATA_BASE_URL: ${{ secrets.DATA_BASE_URL }}
           OPENPANEL_API_URL: ${{ secrets.OPENPANEL_API_URL }}
           OPENPANEL_CLIENT_ID: ${{ secrets.OPENPANEL_CLIENT_ID }}
-        run: npm run build
+        run: pnpm run build
 
       - name: Configure AWS CLI for Yandex Object Storage
         run: |
