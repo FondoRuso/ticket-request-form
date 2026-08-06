@@ -56,7 +56,7 @@ The guarantees that keep it that way:
 
 ## Production Deployment
 
-The production site is hosted on Yandex Object Storage (static website hosting). A single GitHub Actions workflow (`.github/workflows/ci.yml`) runs the linters on every push and pull request, and deploys **only for a version tag** whose checks came back green. Manual runs are available via the **Run workflow** button in the Actions tab — they deploy whatever ref you pick, still behind the same checks.
+The production site is hosted on Yandex Object Storage (static website hosting). A single GitHub Actions workflow (`.github/workflows/ci.yml`) runs the linters on every pull request and on every version tag, and deploys **only for a version tag** whose checks came back green. A bare push to `dev` triggers nothing — code reaches CI through its pull request, and again when it is tagged. Manual runs are available via the **Run workflow** button in the Actions tab — they deploy whatever ref you pick, still behind the same checks.
 
 ### Releasing
 
