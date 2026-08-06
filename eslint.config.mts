@@ -13,12 +13,4 @@ export default defineConfigEslintQuasar(
   { ...eslintPluginJsdoc.config, files: ['src/**/*.ts'] },
   eslintPluginRegexp.config,
   eslintPluginSonarjs.config,
-  {
-    // Quasar's Vite build loads this one through PostCSS's CommonJS resolver,
-    // so it has to stay `.cjs` even though the package is an ES module.
-    files: ['postcss.config.cjs'],
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
 )
