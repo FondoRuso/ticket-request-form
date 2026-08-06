@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { emailRule, requiredRule } from 'src/utils/validation'
 import { computed, ref } from 'vue'
+
 import type { Member } from './members-store'
 
 export type Sport = 'football' | 'basketball'

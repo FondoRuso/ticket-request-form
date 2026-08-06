@@ -113,7 +113,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: Match | null]
-  openFilters: []
+  'openFilters': []
 }>()
 
 const select = useTemplateRef<QSelect>('select')

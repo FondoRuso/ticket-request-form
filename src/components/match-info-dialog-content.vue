@@ -6,7 +6,10 @@
   >
     <q-card>
       <q-card-section>
-        <h2 :id="dialogTitleId" class="text-h6 q-ma-none">
+        <h2
+          :id="dialogTitleId"
+          class="text-h6 q-ma-none"
+        >
           О расписании матчей
         </h2>
       </q-card-section>
@@ -44,7 +47,10 @@
         </p>
       </q-card-section>
 
-      <q-card-actions align="center" class="q-pa-md">
+      <q-card-actions
+        align="center"
+        class="q-pa-md"
+      >
         <q-btn
           v-close-popup
           label="Понятно"

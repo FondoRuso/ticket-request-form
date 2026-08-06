@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import { track } from 'src/utils/analytics'
 import { getCetDate } from 'src/utils/date'
+import { ref } from 'vue'
+
 import type { Match } from './form-store'
 
 export const useMatchesStore = defineStore('matches', () => {

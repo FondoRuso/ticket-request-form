@@ -148,7 +148,11 @@
           >
             Не удалось загрузить матчи: {{ matchesStore.error }}
             <template #action>
-              <q-btn flat label="Повторить" @click="reloadMatches" />
+              <q-btn
+                flat
+                label="Повторить"
+                @click="reloadMatches"
+              />
             </template>
           </q-banner>
 
@@ -267,9 +271,8 @@ const matchesStore = useMatchesStore()
 const membersStore = useMembersStore()
 const formRef = ref<QForm | null>(null)
 const successHeading = useTemplateRef<HTMLHeadingElement>('successHeading')
-const matchSelect = useTemplateRef<InstanceType<typeof MatchSelect>>(
-  'matchSelect',
-)
+const matchSelect =
+  useTemplateRef<InstanceType<typeof MatchSelect>>('matchSelect')
 const isSubmitting = ref(false)
 const showMatchInfo = ref(false)
 const showFilters = ref(false)
@@ -377,23 +380,23 @@ async function onSubmit() {
   }
 
   const record = {
-    Имя: data.memberName,
+    'Имя': data.memberName,
     'Дата матча': match?.date ? formatDateForApi(match.date) : null,
-    Спорт: sport,
-    Команда: match?.team ?? '',
-    Соперник: match?.vs ?? '',
+    'Спорт': sport,
+    'Команда': match?.team ?? '',
+    'Соперник': match?.vs ?? '',
     'Где?': match?.atHome ? 'Дома' : 'Выезд',
     'Категория билета': data.ticketCategory ?? '',
-    Турнир: match?.tournament ?? '',
-    Тип: match?.type ?? '',
-    Телефон: data.phone,
-    Телеграм: data.telegram,
-    Электропочта: data.email,
+    'Турнир': match?.tournament ?? '',
+    'Тип': match?.type ?? '',
+    'Телефон': data.phone,
+    'Телеграм': data.telegram,
+    'Электропочта': data.email,
     'Имя лат.': data.personalData?.firstName ?? '',
     'Фамилия лат.': data.personalData?.lastName ?? '',
     'Дата рождения': data.personalData?.birthDate || null,
     '№ документа': data.personalData?.documentNumber ?? '',
-    Raw: JSON.stringify(data),
+    'Raw': JSON.stringify(data),
   }
 
   let status = 0

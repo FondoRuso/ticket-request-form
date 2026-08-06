@@ -1,5 +1,5 @@
-import { boot } from 'quasar/wrappers'
 import { QInput, QSelect } from 'quasar'
+import { boot } from 'quasar/wrappers'
 
 export default boot(() => {
   if (QInput.props.outlined) {

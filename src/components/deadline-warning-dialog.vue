@@ -7,7 +7,10 @@
   >
     <q-card>
       <q-card-section>
-        <h2 :id="dialogTitleId" class="text-h6 q-ma-none">
+        <h2
+          :id="dialogTitleId"
+          class="text-h6 q-ma-none"
+        >
           Срок подачи заявки
         </h2>
       </q-card-section>
@@ -18,14 +21,22 @@
         {{ deadlineDays }}&nbsp;дней.
       </q-card-section>
 
-      <q-card-actions align="right" class="q-pa-md">
+      <q-card-actions
+        align="right"
+        class="q-pa-md"
+      >
         <q-btn
           flat
           no-caps
           label="Всё равно отправить"
           @click="$emit('confirm')"
         />
-        <q-btn outline no-caps label="Отмена" @click="$emit('cancel')" />
+        <q-btn
+          outline
+          no-caps
+          label="Отмена"
+          @click="$emit('cancel')"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -44,8 +55,8 @@ const props = defineProps<{
 
 defineEmits<{
   'update:modelValue': [value: boolean]
-  confirm: []
-  cancel: []
+  'confirm': []
+  'cancel': []
 }>()
 
 const dialogTitleId = useId()

@@ -1,7 +1,11 @@
 <template>
   <div class="app-header row items-center q-gutter-sm q-mb-md full-width">
     <div class="logo-crop">
-      <img src="/logo.svg" alt="Фондо Русо" class="logo-img" />
+      <img
+        src="/logo.svg"
+        alt="Фондо Русо"
+        class="logo-img"
+      />
     </div>
     <div class="app-header__copy">
       <h1 class="app-header__title text-h4 q-ma-none">Заявка на билет</h1>

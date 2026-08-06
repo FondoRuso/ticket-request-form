@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import { track } from 'src/utils/analytics'
 import { getCetDate } from 'src/utils/date'
+import { ref } from 'vue'
 
 export interface Member {
   id: number

@@ -74,7 +74,12 @@
                 "
               >
                 <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="OK" color="primary" flat />
+                  <q-btn
+                    v-close-popup
+                    label="OK"
+                    color="primary"
+                    flat
+                  />
                 </div>
               </q-date>
             </q-popup-proxy>

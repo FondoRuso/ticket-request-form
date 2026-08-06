@@ -1,7 +1,8 @@
+import { lookup } from 'node:dns/promises'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { join } from 'node:path'
-import { lookup } from 'node:dns/promises'
+
 import puppeteer from 'puppeteer'
 
 const DIST_DIR = join(import.meta.dirname, 'dist/spa')
@@ -27,7 +28,9 @@ function startServer() {
     try {
       const data = await readFile(filePath)
       const ext = filePath.slice(filePath.lastIndexOf('.'))
-      res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'application/octet-stream' })
+      res.writeHead(200, {
+        'Content-Type': mimeTypes[ext] || 'application/octet-stream',
+      })
       res.end(data)
     } catch {
       // SPA fallback
@@ -37,7 +40,7 @@ function startServer() {
     }
   })
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     server.listen(PORT, () => resolve(server))
   })
 }
@@ -73,10 +76,12 @@ async function prerender() {
   const indexPath = join(DIST_DIR, 'index.html')
   await writeFile(indexPath, html, 'utf-8')
 
-  console.log('Prerender complete! dist/spa/index.html now contains prerendered HTML.')
+  console.log(
+    'Prerender complete! dist/spa/index.html now contains prerendered HTML.',
+  )
 }
 
-prerender().catch((err) => {
+prerender().catch(err => {
   console.error('Prerender failed:', err)
   process.exit(1)
 })

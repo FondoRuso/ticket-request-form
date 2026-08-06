@@ -6,13 +6,21 @@
   >
     <q-card>
       <q-card-section>
-        <h2 :id="`${uid}-title`" class="text-h6 q-ma-none">
+        <h2
+          :id="`${uid}-title`"
+          class="text-h6 q-ma-none"
+        >
           Какие матчи показывать
         </h2>
       </q-card-section>
 
       <q-card-section class="q-pt-none column items-start">
-        <q-checkbox v-model="allTeams" label="Все" dense class="q-py-xs" />
+        <q-checkbox
+          v-model="allTeams"
+          label="Все"
+          dense
+          class="q-py-xs"
+        />
 
         <div
           v-for="group in TEAM_GROUPS"
@@ -39,7 +47,10 @@
         </div>
       </q-card-section>
 
-      <q-card-actions align="center" class="q-pa-md">
+      <q-card-actions
+        align="center"
+        class="q-pa-md"
+      >
         <q-btn
           label="Готово"
           flat

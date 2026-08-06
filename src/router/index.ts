@@ -1,10 +1,12 @@
-import { defineRouter } from '#q-app/wrappers'
 import {
   createMemoryHistory,
   createRouter,
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router'
+
+import { defineRouter } from '#q-app/wrappers'
+
 import routes from './routes'
 
 export default defineRouter(function () {

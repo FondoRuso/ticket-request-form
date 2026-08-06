@@ -16,7 +16,10 @@
         href="https://github.com/FondoRuso/ticket-request-form"
         class="app-link"
       >
-        <q-icon :name="githubIcon" size="1.4em" />
+        <q-icon
+          :name="githubIcon"
+          size="1.4em"
+        />
         GitHub
       </a>
       · версия {{ version }}

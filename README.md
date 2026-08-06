@@ -29,14 +29,14 @@ nano .env
 
 These variables are **baked into the JS bundle at build time**.
 
-| Variable | Description |
-| --- | --- |
-| `NOCODB_API_URL` | NocoDB instance URL |
-| `NOCODB_REQUESTS_FORM_PUBLIC_UUID` | Public UUID of the ticket request form |
-| `NOCODB_REQUESTS_VIEW_URL` | URL to view submitted requests |
-| `DATA_BASE_URL` | Base URL for `matches.json` and `members.json` (e.g. `https://example.workers.dev`) |
-| `OPENPANEL_API_URL` | OpenPanel **API** origin |
-| `OPENPANEL_CLIENT_ID` | OpenPanel client ID. Leave empty to disable analytics |
+| Variable                           | Description                                                                         |
+| ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `NOCODB_API_URL`                   | NocoDB instance URL                                                                 |
+| `NOCODB_REQUESTS_FORM_PUBLIC_UUID` | Public UUID of the ticket request form                                              |
+| `NOCODB_REQUESTS_VIEW_URL`         | URL to view submitted requests                                                      |
+| `DATA_BASE_URL`                    | Base URL for `matches.json` and `members.json` (e.g. `https://example.workers.dev`) |
+| `OPENPANEL_API_URL`                | OpenPanel **API** origin                                                            |
+| `OPENPANEL_CLIENT_ID`              | OpenPanel client ID. Leave empty to disable analytics                               |
 
 `matches.json` and `members.json` are fetched from `DATA_BASE_URL` at runtime and are maintained by a separate data service.
 
@@ -62,11 +62,11 @@ The production site is hosted on Yandex Object Storage (static website hosting).
 
 Add the [environment variables](#environment-variables) above as GitHub Secrets with identical names, plus Yandex Cloud credentials — an S3-compatible static key of a service account with the `storage.editor` role on the bucket:
 
-| Secret | Description |
-| --- | --- |
-| `YC_ACCESS_KEY_ID` | Key ID from IAM → service account → access keys |
-| `YC_SECRET_ACCESS_KEY` | Secret part, shown only once at creation |
-| `YC_BUCKET_NAME` | Bucket name; **must match the public domain** |
+| Secret                 | Description                                     |
+| ---------------------- | ----------------------------------------------- |
+| `YC_ACCESS_KEY_ID`     | Key ID from IAM → service account → access keys |
+| `YC_SECRET_ACCESS_KEY` | Secret part, shown only once at creation        |
+| `YC_BUCKET_NAME`       | Bucket name; **must match the public domain**   |
 
 ### Cache strategy
 
