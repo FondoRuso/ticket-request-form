@@ -1,5 +1,4 @@
 # pnpm 10 skips dependency lifecycle scripts unless they are listed here.
-# Puppeteer's postinstall is the one that matters: it downloads the Chromium
-# that prerender.js drives after the build.
 onlyBuiltDependencies:
+  # Its postinstall downloads the Chromium that prerender.js drives.
   - puppeteer

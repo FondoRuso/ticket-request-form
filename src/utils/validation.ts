@@ -1,5 +1,3 @@
-// Text fields hand over a string, the member select hands over a `Member`, so
-// only the string case has an empty value worth rejecting.
 export const requiredRule = (val: unknown) =>
   (typeof val === 'string'
     ? val.trim().length > 0

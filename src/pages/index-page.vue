@@ -386,10 +386,6 @@ async function onSubmit() {
     }
   }
 
-  // NocoDB's date column rejects an empty string, so an unfilled birth date has
-  // to go out as an explicit null.
-  const birthDate = data.personalData?.birthDate ?? ''
-
   const record = {
     'Имя': data.memberName,
     'Дата матча': match?.date ? formatDateForApi(match.date) : null,
@@ -405,7 +401,7 @@ async function onSubmit() {
     'Электропочта': data.email,
     'Имя лат.': data.personalData?.firstName ?? '',
     'Фамилия лат.': data.personalData?.lastName ?? '',
-    'Дата рождения': birthDate === '' ? null : birthDate,
+    'Дата рождения': data.personalData?.birthDate ?? null,
     '№ документа': data.personalData?.documentNumber ?? '',
     'Raw': JSON.stringify(data),
   }
