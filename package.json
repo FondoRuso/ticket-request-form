@@ -37,7 +37,7 @@
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
     "postcss": "^8.5.26",
-    "puppeteer": "^24.43.1",
+    "puppeteer": "^25.8.0",
     "typescript": "~5.7.0",
     "vue-tsc": "^2.2.0"
   },
