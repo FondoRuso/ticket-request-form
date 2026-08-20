@@ -99,7 +99,7 @@ The app will be available at `http://localhost:8080`.
 
 ## Local Development
 
-Requires Node >= 24 and [pnpm](https://pnpm.io) 10 (`corepack enable pnpm`
+Requires Node >= 24.15 and [pnpm](https://pnpm.io) 10 (`corepack enable pnpm`
 picks up the version pinned in `package.json`). Do not use npm here — it would
 write a second lock file next to `pnpm-lock.yaml`.
 
