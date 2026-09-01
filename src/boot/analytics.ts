@@ -1,6 +1,5 @@
-import { initAnalytics } from 'src/utils/analytics'
-
-import { defineBoot } from '#q-app/wrappers'
+import { defineBoot } from '#q-app'
+import { initAnalytics } from '@/utils/analytics'
 
 export default defineBoot(({ router }) => {
   initAnalytics(router)

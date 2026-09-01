@@ -224,7 +224,7 @@
 </template>
 
 <script lang="ts">
-import type { Sport } from 'stores/form-store'
+import type { Sport } from '@/stores/form-store'
 
 type FiltersSource = 'link' | 'match_field'
 
@@ -251,34 +251,35 @@ function formatDateForApi(dateStr: string): string {
 </script>
 
 <script setup lang="ts">
-import AppFooter from 'components/app-footer.vue'
-import AppHeader from 'components/app-header.vue'
-import DeadlineWarningDialog from 'components/deadline-warning-dialog.vue'
-import MatchFiltersDialog from 'components/match-filters-dialog.vue'
-import MatchInfoDialogContent from 'components/match-info-dialog-content.vue'
-import MatchSelect from 'components/match-select.vue'
-import PersonalDataBlock from 'components/personal-data-block.vue'
 import type { QForm } from 'quasar'
 import { useQuasar } from 'quasar'
-import { matchProperties, track } from 'src/utils/analytics'
-import {
-  daysUntilMatch,
-  DEADLINE_DAYS_AWAY,
-  DEADLINE_DAYS_HOME,
-} from 'src/utils/date'
-import { emailRule, requiredRule } from 'src/utils/validation'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
+
+import AppFooter from '@/components/app-footer.vue'
+import AppHeader from '@/components/app-header.vue'
+import DeadlineWarningDialog from '@/components/deadline-warning-dialog.vue'
+import MatchFiltersDialog from '@/components/match-filters-dialog.vue'
+import MatchInfoDialogContent from '@/components/match-info-dialog-content.vue'
+import MatchSelect from '@/components/match-select.vue'
+import PersonalDataBlock from '@/components/personal-data-block.vue'
 import {
   matchTeamKey,
   TEAM_FILTERS,
   TICKET_CATEGORIES,
   useFormStore,
-} from 'stores/form-store'
-import { useMatchesStore } from 'stores/matches-store'
-import { type Member, useMembersStore } from 'stores/members-store'
-import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
+} from '@/stores/form-store'
+import { useMatchesStore } from '@/stores/matches-store'
+import { type Member, useMembersStore } from '@/stores/members-store'
+import { matchProperties, track } from '@/utils/analytics'
+import {
+  daysUntilMatch,
+  DEADLINE_DAYS_AWAY,
+  DEADLINE_DAYS_HOME,
+} from '@/utils/date'
+import { emailRule, requiredRule } from '@/utils/validation'
 
 const $q = useQuasar()
-const requestsViewUrl = process.env.NOCODB_REQUESTS_VIEW_URL
+const requestsViewUrl = import.meta.env.NOCODB_REQUESTS_VIEW_URL
 
 const formStore = useFormStore()
 const matchesStore = useMatchesStore()
@@ -407,7 +408,7 @@ async function onSubmit() {
 
   try {
     const res = await fetch(
-      `${process.env.NOCODB_API_URL}/api/v2/public/shared-view/${process.env.NOCODB_REQUESTS_FORM_PUBLIC_UUID}/rows`,
+      `${import.meta.env.NOCODB_API_URL}/api/v2/public/shared-view/${import.meta.env.NOCODB_REQUESTS_FORM_PUBLIC_UUID}/rows`,
       {
         method: 'POST',
         headers: {

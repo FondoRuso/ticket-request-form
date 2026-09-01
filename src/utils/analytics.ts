@@ -1,7 +1,8 @@
 import { OpenPanel, type TrackProperties } from '@openpanel/web'
-import { daysUntilMatch } from 'src/utils/date'
-import type { Match, Sport } from 'stores/form-store'
 import type { Router } from 'vue-router'
+
+import type { Match, Sport } from '@/stores/form-store'
+import { daysUntilMatch } from '@/utils/date'
 
 interface MatchProperties {
   sport: Sport
@@ -71,8 +72,8 @@ let failedSends = 0
 const isPrerender = () => window.__PRERENDER__ === true || navigator.webdriver
 
 export function initAnalytics(router: Router) {
-  const apiUrl = process.env.OPENPANEL_API_URL
-  const clientId = process.env.OPENPANEL_CLIENT_ID
+  const apiUrl = import.meta.env.OPENPANEL_API_URL
+  const clientId = import.meta.env.OPENPANEL_CLIENT_ID
 
   // Without an explicit apiUrl the SDK falls back to OpenPanel's public cloud,
   // so an unconfigured build must stay silent rather than pick a default.
@@ -89,7 +90,7 @@ export function initAnalytics(router: Router) {
       // outgoing links, so this is the one switch that silences all of them.
       filter: () => !stopped,
     })
-    client.setGlobalProperties({ appVersion: process.env.APP_VERSION })
+    client.setGlobalProperties({ appVersion: import.meta.env.APP_VERSION })
   } catch {
     client = null
     return

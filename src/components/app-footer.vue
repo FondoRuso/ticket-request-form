@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-const version = process.env.APP_VERSION
+const version = import.meta.env.APP_VERSION
 
 function githubIconUrl(fill: string) {
   return (

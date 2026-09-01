@@ -101,10 +101,11 @@
 </template>
 
 <script setup lang="ts">
-import { formatBirthDate } from 'src/utils/date'
-import { requiredRule } from 'src/utils/validation'
-import type { PersonalData } from 'stores/form-store'
 import { computed, ref } from 'vue'
+
+import type { PersonalData } from '@/stores/form-store'
+import { formatBirthDate } from '@/utils/date'
+import { requiredRule } from '@/utils/validation'
 
 const model = defineModel<PersonalData>({ required: true })
 

@@ -5,13 +5,13 @@ import {
   createWebHistory,
 } from 'vue-router'
 
-import { defineRouter } from '#q-app/wrappers'
+import { defineRouter } from '#q-app'
 
 import routes from './routes'
 
 function historyFactory() {
-  if (process.env.SERVER) return createMemoryHistory
-  return process.env.VUE_ROUTER_MODE === 'history'
+  if (import.meta.env.QUASAR_SERVER) return createMemoryHistory
+  return import.meta.env.QUASAR_VUE_ROUTER_MODE === 'history'
     ? createWebHistory
     : createWebHashHistory
 }
@@ -22,6 +22,6 @@ export default defineRouter(function () {
   return createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
-    history: createHistory(process.env.VUE_ROUTER_BASE),
+    history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE),
   })
 })

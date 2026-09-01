@@ -1,6 +1,6 @@
 import { QInput, QSelect } from 'quasar'
 
-import { defineBoot } from '#q-app/wrappers'
+import { defineBoot } from '#q-app'
 
 export default defineBoot(() => {
   if (QInput.props.outlined) {

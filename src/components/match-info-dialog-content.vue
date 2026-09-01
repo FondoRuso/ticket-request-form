@@ -84,8 +84,9 @@ function madridMidnightInLocalTime(now: Date): string {
 </script>
 
 <script setup lang="ts">
-import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from 'src/utils/date'
 import { useId } from 'vue'
+
+import { DEADLINE_DAYS_AWAY, DEADLINE_DAYS_HOME } from '@/utils/date'
 
 const open = defineModel<boolean>({ required: true })
 

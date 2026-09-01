@@ -94,8 +94,8 @@
 </template>
 
 <script lang="ts">
-import { formatMatchDate } from 'src/utils/date'
-import { type Match, sportEmoji } from 'stores/form-store'
+import { type Match, sportEmoji } from '@/stores/form-store'
+import { formatMatchDate } from '@/utils/date'
 
 function formatMatchLabel(match: Match): string {
   const label = match.atHome
@@ -107,9 +107,10 @@ function formatMatchLabel(match: Match): string {
 
 <script setup lang="ts">
 import type { QSelect } from 'quasar'
-import { requiredMatchRule } from 'src/utils/validation'
-import { useMatchesStore } from 'stores/matches-store'
 import { nextTick, useTemplateRef } from 'vue'
+
+import { useMatchesStore } from '@/stores/matches-store'
+import { requiredMatchRule } from '@/utils/validation'
 
 const model = defineModel<Match | null>({ required: true })
 

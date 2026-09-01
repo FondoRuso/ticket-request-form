@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-import { defineStore } from '#q-app/wrappers'
+import { defineStore } from '#q-app'
 
 export default defineStore(function () {
   const pinia = createPinia()

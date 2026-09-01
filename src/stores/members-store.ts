@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { track } from 'src/utils/analytics'
-import { getCetDate } from 'src/utils/date'
 import { ref } from 'vue'
+
+import { track } from '@/utils/analytics'
+import { getCetDate } from '@/utils/date'
 
 export interface Member {
   id: number
@@ -20,7 +21,9 @@ export const useMembersStore = defineStore('members', () => {
     }
     error.value = null
     try {
-      const response = await fetch(`${process.env.DATA_BASE_URL}/members.json`)
+      const response = await fetch(
+        `${import.meta.env.DATA_BASE_URL}/members.json`,
+      )
       if (!response.ok) throw new Error(`HTTP ${String(response.status)}`)
       members.value = await response.json()
       lastFetchDate = getCetDate()
@@ -32,7 +35,9 @@ export const useMembersStore = defineStore('members', () => {
 
   async function refreshMembers() {
     try {
-      const response = await fetch(`${process.env.DATA_BASE_URL}/members.json`)
+      const response = await fetch(
+        `${import.meta.env.DATA_BASE_URL}/members.json`,
+      )
       if (!response.ok) return
       members.value = await response.json()
       lastFetchDate = getCetDate()

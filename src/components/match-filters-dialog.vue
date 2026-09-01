@@ -69,7 +69,7 @@ import {
   sportEmoji,
   TEAM_FILTERS,
   teamFilterKey,
-} from 'stores/form-store'
+} from '@/stores/form-store'
 
 interface TeamGroup {
   slug: string

@@ -1,21 +1,8 @@
 import { readFileSync } from 'node:fs'
 
-import { defineConfig } from '#q-app/wrappers'
+import { defineConfig } from '#q-app'
 
 const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
-
-const shellEnv = Object.fromEntries(
-  [
-    'NOCODB_API_URL',
-    'NOCODB_REQUESTS_FORM_PUBLIC_UUID',
-    'NOCODB_REQUESTS_VIEW_URL',
-    'DATA_BASE_URL',
-    'OPENPANEL_API_URL',
-    'OPENPANEL_CLIENT_ID',
-  ]
-    .filter(key => process.env[key] !== undefined)
-    .map(key => [key, process.env[key]]),
-)
 
 export default defineConfig(() => {
   return {
@@ -34,18 +21,16 @@ export default defineConfig(() => {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       vueOptionsAPI: false,
       typescript: { strict: true, vueShim: true },
-      env: {
+      defineEnv: {
         APP_VERSION: version,
-        ...shellEnv,
+        NOCODB_API_URL: import.meta.env.NOCODB_API_URL,
+        NOCODB_REQUESTS_FORM_PUBLIC_UUID: import.meta.env
+          .NOCODB_REQUESTS_FORM_PUBLIC_UUID,
+        NOCODB_REQUESTS_VIEW_URL: import.meta.env.NOCODB_REQUESTS_VIEW_URL,
+        DATA_BASE_URL: import.meta.env.DATA_BASE_URL,
+        OPENPANEL_API_URL: import.meta.env.OPENPANEL_API_URL || '',
+        OPENPANEL_CLIENT_ID: import.meta.env.OPENPANEL_CLIENT_ID || '',
       },
-      // Analytics is optional. Undeclared keys are left as literal
-      // `process.env.X` in the bundle and throw in the browser, so give them a
-      // value that `.env` and the shell can still override.
-      envFilter: env => ({
-        OPENPANEL_API_URL: '',
-        OPENPANEL_CLIENT_ID: '',
-        ...env,
-      }),
     },
 
     devServer: {

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import { track } from 'src/utils/analytics'
-import { getCetDate } from 'src/utils/date'
 import { ref } from 'vue'
+
+import { track } from '@/utils/analytics'
+import { getCetDate } from '@/utils/date'
 
 import type { Match } from './form-store'
 
@@ -15,7 +16,9 @@ export const useMatchesStore = defineStore('matches', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await fetch(`${process.env.DATA_BASE_URL}/matches.json`)
+      const response = await fetch(
+        `${import.meta.env.DATA_BASE_URL}/matches.json`,
+      )
       if (!response.ok) throw new Error(`HTTP ${String(response.status)}`)
       matches.value = await response.json()
       lastFetchDate = getCetDate()
@@ -30,7 +33,9 @@ export const useMatchesStore = defineStore('matches', () => {
   async function refreshMatches() {
     if (getCetDate() === lastFetchDate) return
     try {
-      const response = await fetch(`${process.env.DATA_BASE_URL}/matches.json`)
+      const response = await fetch(
+        `${import.meta.env.DATA_BASE_URL}/matches.json`,
+      )
       if (!response.ok) return
       matches.value = await response.json()
       lastFetchDate = getCetDate()

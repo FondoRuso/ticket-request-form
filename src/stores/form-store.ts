@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { emailRule, requiredRule } from 'src/utils/validation'
 import { computed, ref } from 'vue'
+
+import { emailRule, requiredRule } from '@/utils/validation'
 
 import type { Member } from './members-store'
 
