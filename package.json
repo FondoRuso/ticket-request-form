@@ -35,7 +35,7 @@
     "jiti": "^2.7.0",
     "npm-run-all2": "^9.0.3",
     "oxfmt": "^0.64.0",
-    "oxlint": "^1.79.0",
+    "oxlint": "^1.81.0",
     "postcss": "^8.5.26",
     "puppeteer": "^25.8.0",
     "typescript": "~5.9.0",
