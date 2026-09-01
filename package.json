@@ -20,6 +20,7 @@
   "dependencies": {
     "@openpanel/web": "^1.4.1",
     "@quasar/extras": "^2.0.4",
+    "@vue/devtools-api": "^8.2.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "quasar": "~2.27.0",
