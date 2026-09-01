@@ -39,7 +39,7 @@
     "postcss": "^8.5.26",
     "puppeteer": "^25.8.0",
     "typescript": "~5.9.0",
-    "vue-tsc": "^3.3.10"
+    "vue-tsc": "^3.3.11"
   },
   "engines": {
     "node": ">=24.15"
